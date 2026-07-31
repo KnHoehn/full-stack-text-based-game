@@ -1,4 +1,4 @@
-package com.hoehn.game.text_based_game_api;
+package com.hoehn.game.textbasedgameapi;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

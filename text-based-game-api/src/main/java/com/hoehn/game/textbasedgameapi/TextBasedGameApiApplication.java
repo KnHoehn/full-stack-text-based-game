@@ -1,4 +1,4 @@
-package com.hoehn.game.text_based_game_api;
+package com.hoehn.game.textbasedgameapi;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
