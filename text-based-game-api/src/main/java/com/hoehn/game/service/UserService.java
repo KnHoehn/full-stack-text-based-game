@@ -10,9 +10,6 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 import java.util.Optional;
-import java.util.Base64;
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
 import java.security.SecureRandom;
 
 @Service
@@ -28,6 +25,36 @@ public class UserService {
     // Retrieves user from the database given the username
     public Optional<User> getMatchingUserName(String userName) {
         return userRepository.findByUserName(userName);
+    }
+
+    // Logs in the user if the username and password matches
+    public boolean loginUser(String userName, String password) {
+
+        Optional<User> matchingUser = getMatchingUserName(userName);
+
+        if (matchingUser.isEmpty()) {
+            return false;
+        }
+
+        User user = matchingUser.get();
+
+        try {
+
+            byte[] decodedSalt = Base64.getDecoder().decode(user.getSalt());
+
+            MessageDigest md;
+            md = MessageDigest.getInstance("SHA-512");
+            md.update(decodedSalt);
+            byte[] digest = md.digest(password.getBytes(StandardCharsets.UTF_8));
+
+            String saltedPassword = Base64.getEncoder().encodeToString(digest);
+
+            return saltedPassword.equals(user.getPassword());
+
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException("Unable to decrypt password", e);
+        }
+
     }
 
     // Saves a new user to the database
