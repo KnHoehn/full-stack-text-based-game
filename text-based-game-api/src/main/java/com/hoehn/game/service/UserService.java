@@ -30,15 +30,20 @@ public class UserService {
     // Logs in the user if the username and password matches
     public boolean loginUser(String userName, String password) {
 
+        // Calls the getMacthingUsernameMethod to find the user in the database given the username and saves the result into matchingUser
         Optional<User> matchingUser = getMatchingUserName(userName);
 
+        // If no username matches, return false
         if (matchingUser.isEmpty()) {
             return false;
         }
 
+        // Retrieves the optional user into a user object
         User user = matchingUser.get();
 
         try {
+
+            // Decrypts the password from the database and checks to see if it matches the user-entered password
 
             byte[] decodedSalt = Base64.getDecoder().decode(user.getSalt());
 
@@ -49,6 +54,7 @@ public class UserService {
 
             String saltedPassword = Base64.getEncoder().encodeToString(digest);
 
+            // Returns a boolean result if the password was correct or not
             return saltedPassword.equals(user.getPassword());
 
         } catch (NoSuchAlgorithmException e) {
@@ -59,6 +65,8 @@ public class UserService {
 
     // Saves a new user to the database
     public User createUser(User user) {
+
+        // TODO handle duplicate usernames properly. Right now it stops the duplication but I need to give the user the opportunity To pick a different username if already exists
 
         try {
 

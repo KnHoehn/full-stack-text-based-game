@@ -22,7 +22,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    // Endpoint for retrieving a user from the database
+    // Endpoint for retrieving a user from the database given the username
     @GetMapping("/user/{userName}")
     public ResponseEntity<User> getUserName(@PathVariable String userName) {
         Optional<User> user = userService.getMatchingUserName(userName);
@@ -30,10 +30,12 @@ public class UserController {
     }
 
     // Endpoint for inserting a new user into the database
-    @PostMapping("/user")
+    @PostMapping("/register")
     public ResponseEntity<User> createUser(@RequestBody User user) {
 
+        // Calls the createUser method to create a new user account and insert the info into the database
         User newUser = userService.createUser(user);
+
         return ResponseEntity.ok(newUser);
     }
 
@@ -41,6 +43,8 @@ public class UserController {
     @GetMapping("/login")
     public ResponseEntity<Boolean> loginUser(@RequestBody User user) {
 
+        // Calls loginUser method to determine if the user exists in the database and the password for the user is correct
+        // And saves the result of the login into a boolean value
         boolean authenticated = userService.loginUser(
                 user.getUserName(),
                 user.getPassword()
