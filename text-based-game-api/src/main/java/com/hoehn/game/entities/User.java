@@ -1,4 +1,4 @@
-package com.hoehn.game.Entities;
+package com.hoehn.game.entities;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -29,7 +29,7 @@ public class User {
         return id;
     }
 
-    public String getName() {
+    public String getUserName() {
         return userName;
     }
 
