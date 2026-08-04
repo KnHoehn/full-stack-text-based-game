@@ -1,7 +1,7 @@
-package com.hoehn.game.textbasedgameapi.service;
+package com.hoehn.game.Service;
 
-import com.hoehn.game.textbasedgameapi.entities.User;
-import com.hoehn.game.textbasedgameapi.repository.UserRepository;
+import com.hoehn.game.Entities.User;
+import com.hoehn.game.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

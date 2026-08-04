@@ -1,4 +1,4 @@
-package com.hoehn.game.textbasedgameapi.entities;
+package com.hoehn.game.Entities;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -16,7 +16,7 @@ public class User {
     @Column(name = "user_id")
     private int id;
 
-    @Column(name = "user-name", nullable = false, unique = true)
+    @Column(name = "user_name", nullable = false, unique = true)
     private String userName;
 
     @Column(name = "user_password", nullable = false)

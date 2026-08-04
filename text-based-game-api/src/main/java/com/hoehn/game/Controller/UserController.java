@@ -1,7 +1,7 @@
-package com.hoehn.game.textbasedgameapi.controller;
+package com.hoehn.game.Controller;
 
-import com.hoehn.game.textbasedgameapi.entities.User;
-import com.hoehn.game.textbasedgameapi.service.UserService;
+import com.hoehn.game.Entities.User;
+import com.hoehn.game.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api")
 public class UserController {
 
     private final UserService userService;
