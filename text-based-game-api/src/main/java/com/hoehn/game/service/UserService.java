@@ -5,7 +5,15 @@ import com.hoehn.game.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
 import java.util.Optional;
+import java.util.Base64;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.SecureRandom;
 
 @Service
 public class UserService {
@@ -24,6 +32,32 @@ public class UserService {
 
     // Saves a new user to the database
     public User createUser(User user) {
-        return userRepository.save(user);
+
+        try {
+
+            // Encrypts the password before saving to the database
+
+            SecureRandom RANDOM = new SecureRandom();
+
+            byte[] salt = new byte[16];
+            RANDOM.nextBytes(salt);
+
+            MessageDigest md;
+            md = MessageDigest.getInstance("SHA-512");
+            md.update(salt);
+            byte[] digest = md.digest(user.getPassword().getBytes(StandardCharsets.UTF_8));
+
+            String saltedPassword = Base64.getEncoder().encodeToString(digest);
+            String saltedString = Base64.getEncoder().encodeToString(salt);
+
+            user.setPassword(saltedPassword);
+            user.setSalt(saltedString);
+
+            return userRepository.save(user);
+
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException("Unable to encrypt password", e);
+        }
+
     }
 }
