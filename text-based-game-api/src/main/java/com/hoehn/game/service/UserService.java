@@ -1,7 +1,7 @@
-package com.hoehn.game.textbasedgameapi.service;
+package com.hoehn.game.service;
 
-import com.hoehn.game.textbasedgameapi.entities.User;
-import com.hoehn.game.textbasedgameapi.repository.UserRepository;
+import com.hoehn.game.entities.User;
+import com.hoehn.game.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +17,13 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
+    // Retrieves user from the database given the username
     public Optional<User> getMatchingUserName(String userName) {
         return userRepository.findByUserName(userName);
+    }
+
+    // Saves a new user to the database
+    public User createUser(User user) {
+        return userRepository.save(user);
     }
 }

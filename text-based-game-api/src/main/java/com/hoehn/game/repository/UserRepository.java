@@ -1,6 +1,6 @@
-package com.hoehn.game.textbasedgameapi.repository;
+package com.hoehn.game.repository;
 
-import com.hoehn.game.textbasedgameapi.entities.User;
+import com.hoehn.game.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
