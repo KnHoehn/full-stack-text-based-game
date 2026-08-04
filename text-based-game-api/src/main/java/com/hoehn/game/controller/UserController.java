@@ -36,4 +36,16 @@ public class UserController {
         User newUser = userService.createUser(user);
         return ResponseEntity.ok(newUser);
     }
+
+    // Endpoint for logging in a user
+    @GetMapping("/login")
+    public ResponseEntity<Boolean> loginUser(@RequestBody User user) {
+
+        boolean authenticated = userService.loginUser(
+                user.getUserName(),
+                user.getPassword()
+        );
+
+        return ResponseEntity.ok(authenticated);
+    }
 }
