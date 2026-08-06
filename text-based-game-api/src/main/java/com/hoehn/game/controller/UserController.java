@@ -40,7 +40,7 @@ public class UserController {
     }
 
     // Endpoint for logging in a user
-    @GetMapping("/login")
+    @PostMapping("/login")
     public ResponseEntity<Boolean> loginUser(@RequestBody User user) {
 
         // Calls loginUser method to determine if the user exists in the database and the password for the user is correct

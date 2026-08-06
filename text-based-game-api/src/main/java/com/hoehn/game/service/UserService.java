@@ -22,7 +22,7 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    // Retrieves user from the database given the username
+    // Calls the user repository to retrieve the user from the database given the username
     public Optional<User> getMatchingUserName(String userName) {
         return userRepository.findByUserName(userName);
     }
@@ -30,7 +30,7 @@ public class UserService {
     // Logs in the user if the username and password matches
     public boolean loginUser(String userName, String password) {
 
-        // Calls the getMacthingUsernameMethod to find the user in the database given the username and saves the result into matchingUser
+        // Calls the getMatchingUsernameMethod to find the user in the database given the username and saves the result into matchingUser
         Optional<User> matchingUser = getMatchingUserName(userName);
 
         // If no username matches, return false
