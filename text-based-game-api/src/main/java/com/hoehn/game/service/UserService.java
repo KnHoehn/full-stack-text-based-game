@@ -64,35 +64,45 @@ public class UserService {
     }
 
     // Saves a new user to the database
-    public User createUser(User user) {
+    public void createUser(String userName, String password) {
 
-        // TODO handle duplicate usernames properly. Right now it stops the duplication but I need to give the user the opportunity To pick a different username if already exists
 
-        try {
+        // Checks if the username already exists in the database
+        Optional<User> matchingUser = getMatchingUserName(userName);
 
-            // Encrypts the password before saving to the database
-
-            SecureRandom RANDOM = new SecureRandom();
-
-            byte[] salt = new byte[16];
-            RANDOM.nextBytes(salt);
-
-            MessageDigest md;
-            md = MessageDigest.getInstance("SHA-512");
-            md.update(salt);
-            byte[] digest = md.digest(user.getPassword().getBytes(StandardCharsets.UTF_8));
-
-            String saltedPassword = Base64.getEncoder().encodeToString(digest);
-            String saltedString = Base64.getEncoder().encodeToString(salt);
-
-            user.setPassword(saltedPassword);
-            user.setSalt(saltedString);
-
-            return userRepository.save(user);
-
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException("Unable to encrypt password", e);
+        // If no username matches, continue
+        if (matchingUser.isPresent()) {
+            throw new IllegalArgumentException("Username already exists.");
         }
 
+            try {
+
+                // Encrypts the password before saving to the database
+
+                SecureRandom RANDOM = new SecureRandom();
+
+                byte[] salt = new byte[16];
+                RANDOM.nextBytes(salt);
+
+                MessageDigest md;
+                md = MessageDigest.getInstance("SHA-512");
+                md.update(salt);
+                byte[] digest = md.digest(password.getBytes(StandardCharsets.UTF_8));
+
+                String saltedPassword = Base64.getEncoder().encodeToString(digest);
+                String saltedString = Base64.getEncoder().encodeToString(salt);
+
+                // Creates the User object
+                User user = new User();
+                user.setUserName(userName);
+                user.setPassword(saltedPassword);
+                user.setSalt(saltedString);
+
+                // Saves the new user to the database
+                userRepository.save(user);
+
+            } catch (NoSuchAlgorithmException e) {
+                throw new RuntimeException("Unable to encrypt password", e);
+            }
     }
 }
