@@ -2,11 +2,15 @@ package com.hoehn.game.controller;
 
 import com.hoehn.game.dto.CreateUserRequest;
 import com.hoehn.game.dto.LoginUserRequest;
+import com.hoehn.game.dto.LoginUserResponse;
 import com.hoehn.game.dto.RegisterUserResponse;
+import com.hoehn.game.dto.UserResponse;
 import com.hoehn.game.entities.User;
+import com.hoehn.game.service.JwtService;
 import com.hoehn.game.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,9 +24,13 @@ public class UserController {
 
     private final UserService userService;
 
+    private final JwtService jwtService;
+
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, JwtService jwtService) {
+
         this.userService = userService;
+        this.jwtService = jwtService;
     }
 
     // Endpoint for retrieving a user from the database given the username
@@ -59,7 +67,7 @@ public class UserController {
 
     // Endpoint for logging in a user
     @PostMapping("/login")
-    public ResponseEntity<Boolean> loginUser(@RequestBody LoginUserRequest request) {
+    public ResponseEntity<LoginUserResponse> loginUser(@RequestBody LoginUserRequest request) {
 
         // Calls loginUser method to determine if the user exists in the database and the password for the user is correct
         // And saves the result of the login into a boolean value
@@ -67,7 +75,24 @@ public class UserController {
                 request.getUserName(),
                 request.getPassword()
         );
+        if (!authenticated) {
+            return ResponseEntity.status(401).build();
+        }
 
-        return ResponseEntity.ok(authenticated);
+        String token = jwtService.generateToken(request.getUserName());
+
+        return ResponseEntity.ok(
+                new LoginUserResponse(token)
+        );
+
     }
+
+    @GetMapping("/user/me")
+    public ResponseEntity<UserResponse> getCurrentUser(Authentication authentication) {
+
+        String userName = authentication.getName();
+
+        return ResponseEntity.ok(new UserResponse(userName));
+    }
+
 }
