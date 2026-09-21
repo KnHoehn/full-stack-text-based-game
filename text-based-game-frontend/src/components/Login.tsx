@@ -5,6 +5,31 @@ function Login() {
     const [password, setPassword] = useState('')
     const [message, setMessage] = useState('')
 
+    async function getCurrentUser() {
+        try {
+            const token = localStorage.getItem('token')
+
+            const response = await fetch('/api/user/me', {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+
+            if (!response.ok) {
+                setMessage('Unable to retrieve user information.')
+                return
+            }
+
+            const result = await response.json()
+
+            setMessage(`Logged in as ${result.userName}`)
+
+        } catch (error) {
+            console.error(error)
+            setMessage('Unable to connect to the server.')
+        }
+    }
+
     async function handleLogin() {
         try {
             const response = await fetch('/api/login', {
@@ -19,16 +44,16 @@ function Login() {
             })
 
             if (!response.ok) {
-                throw new Error(`HTTP error: ${response.status}`)
-            }
-
-            const authenticated = await response.json()
-
-            if (authenticated) {
-                setMessage('Login successful!')
-            } else {
                 setMessage('Invalid username or password.')
+                return
             }
+
+            const result = await response.json()
+
+            localStorage.setItem('token', result.token)
+
+            await getCurrentUser()
+
         } catch (error) {
             console.error(error)
             setMessage('Unable to connect to the server.')
@@ -62,6 +87,7 @@ function Login() {
             setMessage('Unable to connect to the server.')
         }
     }
+
 
     return (
         <div>
