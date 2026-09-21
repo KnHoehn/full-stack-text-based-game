@@ -24,21 +24,29 @@ public class ScoreController {
         this.scoreService = scoreService;
     }
 
+    // Endpoint for adding a new score to the database
     @PostMapping("/scores")
     public ResponseEntity<Score> createScore(@RequestBody Score score) {
 
+        // Calls the score service to create the score and insert it to the database
         Score newScore = scoreService.createScore(score);
 
+        // TODO: do i really need to be returning the score here?
         return ResponseEntity.ok(newScore);
     }
 
+    // Endpoint for retrieving the leaderboard
     @GetMapping("/leaderboard")
     public ResponseEntity<List<Score>> getLeaderboard() {
+
+        // calls the score service to get the leaderboard entries from the database
         return ResponseEntity.ok(scoreService.getLeaderboard());
     }
 
+    // Endpoint for retrieving the user's personal best scores
     @GetMapping("/personal-best/{userName}")
     public ResponseEntity<List<Score>> getPersonalBest(@PathVariable String userName) {
+        // Calls te score service to get the user's personal best entries from the database
         return ResponseEntity.ok(scoreService.getPersonalBest(userName));
     }
 }

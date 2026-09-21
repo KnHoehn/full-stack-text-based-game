@@ -20,10 +20,12 @@ public class GameController {
     public GameController(GameService gameService) { this.gameService = gameService; }
 
 
+    // Endpoint for starting a new game
     @PostMapping("/games")
     public ResponseEntity<GameState> startGame(
             @RequestBody GameStartRequest request) {
 
+        // Creates a new game
         GameState gameState = gameService.startGame(
                 request.getUserName(),
                 request.getTheme()

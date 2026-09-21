@@ -32,6 +32,7 @@ public class ScoreService {
 
     public List<Score> getPersonalBest(String userName) {
 
+        // Calls the score repository to retrieve the top 10 scores from a user in descending order
         return scoreRepository.findTop10ByUserNameOrderByScoreDesc(userName);
 
     }

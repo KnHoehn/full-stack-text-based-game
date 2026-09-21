@@ -7,6 +7,8 @@ import java.util.UUID;
 
 public class GameState {
 
+    // Model that holds the current state of the players game
+
     private final String gameId;
     private String theme;
     private String userName;

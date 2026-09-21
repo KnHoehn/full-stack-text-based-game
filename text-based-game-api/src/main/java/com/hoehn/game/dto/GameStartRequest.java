@@ -2,6 +2,8 @@ package com.hoehn.game.dto;
 
 public class GameStartRequest {
 
+    // DTO for a game start request
+
     private String userName;
     private String theme;
 
