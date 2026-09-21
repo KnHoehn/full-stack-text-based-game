@@ -77,7 +77,7 @@ public class UserService {
 
             try {
 
-                // Encrypts the password before saving to the database
+                // Hashes the password before saving to the database
 
                 SecureRandom RANDOM = new SecureRandom();
 
