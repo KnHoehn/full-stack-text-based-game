@@ -1,10 +1,14 @@
+import Game from './Game'
 import { useState } from 'react'
 import Login from './Login'
 import ThemeSelection from './ThemeSelection'
+import type { GameState } from './types/GameState'
 
 function Home() {
 
     const [loggedIn, setLoggedIn] = useState(false)
+
+    const [gameState, setGameState] = useState<GameState | null>(null)
 
     return (
         <main>
@@ -16,12 +20,14 @@ function Home() {
                 Welcome to the text adventure! Log in or create an account to get started.
             </p>
 
-            {loggedIn ? (
+            {!loggedIn ? (
+                <Login onLogin={() => setLoggedIn(true)} />
+            ) : gameState === null ? (
                 <ThemeSelection
-                    onGameStarted={(gameState) => console.log(gameState)}
+                    onGameStarted={(gameState) => setGameState(gameState)}
                 />
             ) : (
-                <Login onLogin={() => setLoggedIn(true)} />
+                <Game gameState={gameState} />
             )}
         </main>
     )
