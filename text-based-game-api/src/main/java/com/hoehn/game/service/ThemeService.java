@@ -10,25 +10,23 @@ import java.util.Map;
 @Service
 public class ThemeService {
 
-    //TODO handle if user enters invalid number
-
     public Theme chooseTheme(String themeChoice) {
 
         String filepath = null;
 
         switch (themeChoice) {
 
-            case "1":
+            case "space":
                 filepath = "src/main/resources/space-theme.json";
                 break;
-            case "2":
+            case "medieval":
                 filepath = "src/main/resources/medieval-theme.json";
                 break;
-            case "3":
+            case "cyberpunk":
                 filepath = "src/main/resources/cyberpunk-theme.json";
                 break;
             default:
-                System.out.println("Please enter a valid number");
+                throw new IllegalArgumentException("Invalid theme");
         }
 
         return World.createTheme(filepath);

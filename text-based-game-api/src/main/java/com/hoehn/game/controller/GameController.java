@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;
 
 @RestController
 public class GameController {
@@ -23,11 +24,13 @@ public class GameController {
     // Endpoint for starting a new game
     @PostMapping("/games")
     public ResponseEntity<GameState> startGame(
-            @RequestBody GameStartRequest request) {
+            @RequestBody GameStartRequest request, Authentication authentication) {
+
+        String userName = authentication.getName();
 
         // Creates a new game
         GameState gameState = gameService.startGame(
-                request.getUserName(),
+                userName,
                 request.getTheme()
         );
 
