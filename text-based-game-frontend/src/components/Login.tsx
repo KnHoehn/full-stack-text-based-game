@@ -1,6 +1,10 @@
 import { useState } from 'react'
 
-function Login() {
+type LoginProps = {
+    onLogin: () => void
+}
+
+function Login({ onLogin }: LoginProps) {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [message, setMessage] = useState('')
@@ -53,6 +57,8 @@ function Login() {
             localStorage.setItem('token', result.token)
 
             await getCurrentUser()
+
+            onLogin()
 
         } catch (error) {
             console.error(error)
