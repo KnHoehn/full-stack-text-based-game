@@ -45,11 +45,14 @@ public class GameService {
         // Adds the game to the list of active games
         activeGames.put(gameState.getGameId(), gameState);
 
+        Room startingRoom = gameState.getRooms().get(gameState.getCurrentRoom());
+
         return new GameResponse(
                 gameState.getGameId(),
                 theme.getName(),
                 theme.getStory(),
                 gameState.getCurrentRoom(),
+                startingRoom.getItemDescription(),
                 gameState.getInventory(),
                 gameState.getGameOver(),
                 "Game started."
@@ -108,27 +111,31 @@ public class GameService {
 
                 gameState.addToInventory(currentRoom.getItem());
                 currentRoom.setItem(null);
+                currentRoom.setItemDescription(null);
                 message = "You picked up the " + itemName + ".";
 
             } else {
                 message = "That item is not here.";
             }
 
-        }
-
-        else if (normalizedCommand.equals("i")) {
+        }  else if (normalizedCommand.equals("i")) {
             message = "instructions";
-        }
 
-        else {
+        } else if (normalizedCommand.equals("exit")) {
+            gameState.setGameOver(true);
+
+        } else {
             message = "Invalid command. Type 'I' to see the instructions.";
         }
+
+        Room currentRoom = gameState.getRooms().get(gameState.getCurrentRoom());
 
         return new GameResponse(
                 gameState.getGameId(),
                 gameState.getTheme(),
                 "",
                 gameState.getCurrentRoom(),
+                currentRoom.getItemDescription(),
                 gameState.getInventory(),
                 gameState.getGameOver(),
                 message

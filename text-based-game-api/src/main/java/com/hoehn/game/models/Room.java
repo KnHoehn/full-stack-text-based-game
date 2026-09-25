@@ -58,4 +58,8 @@ public class Room {
     public void setItem(final String item) {
         this.item = item;
     }
+
+    public void setItemDescription(final String itemDescription) {
+        this.itemDescription = itemDescription;
+    }
 }

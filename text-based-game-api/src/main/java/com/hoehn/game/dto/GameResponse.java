@@ -8,6 +8,7 @@ public class GameResponse {
     private String gameName;
     private String story;
     private String currentRoom;
+    private String itemDescription;
     private List<String> inventory;
     private boolean gameOver;
     private String message;
@@ -17,6 +18,7 @@ public class GameResponse {
             String gameName,
             String story,
             String currentRoom,
+            String itemDescription,
             List<String> inventory,
             boolean gameOver,
             String message) {
@@ -25,6 +27,7 @@ public class GameResponse {
         this.gameName = gameName;
         this.story = story;
         this.currentRoom = currentRoom;
+        this.itemDescription = itemDescription;
         this.inventory = inventory;
         this.gameOver = gameOver;
         this.message = message;
@@ -44,6 +47,10 @@ public class GameResponse {
 
     public String getCurrentRoom() {
         return currentRoom;
+    }
+
+    public String getItemDescription() {
+        return itemDescription;
     }
 
     public List<String> getInventory() {
