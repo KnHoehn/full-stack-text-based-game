@@ -27,7 +27,10 @@ function Home() {
                     onGameStarted={(gameResponse) => setGameResponse(gameResponse)}
                 />
             ) : (
-                <Game gameResponse={gameResponse} />
+                <Game
+                    gameResponse={gameResponse}
+                    onGameExit={() => setGameResponse(null)}
+                />
             )}
         </main>
     )

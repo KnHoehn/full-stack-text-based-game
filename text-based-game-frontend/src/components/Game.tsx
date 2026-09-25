@@ -3,9 +3,10 @@ import type { GameResponse } from '../types/GameResponse.tsx'
 
 type GameProps = {
     gameResponse: GameResponse
+    onGameExit: () => void
 }
 
-function Game({ gameResponse }: GameProps) {
+function Game({ gameResponse, onGameExit }: GameProps) {
 
     const [gameState, setGameState] = useState(gameResponse)
     const [command, setCommand] = useState('')
@@ -39,6 +40,11 @@ function Game({ gameResponse }: GameProps) {
             }
 
             const result: GameResponse = await response.json()
+
+            if (result.gameOver) {
+                onGameExit()
+                return
+            }
 
             if (result.message === 'instructions') {
                 setShowInstructions(true)
@@ -80,6 +86,10 @@ function Game({ gameResponse }: GameProps) {
             <h3>Current Room</h3>
 
             <p>{gameState.currentRoom}</p>
+
+            {gameState.itemDescription && (
+                <p>{gameState.itemDescription}</p>
+            )}
 
             <h3>Inventory</h3>
 
