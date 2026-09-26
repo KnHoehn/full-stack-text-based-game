@@ -17,6 +17,7 @@ type Score = {
 function Scoreboard() {
 
     const [scores, setScores] = useState<Score[]>([])
+    const [leaderboard, setLeaderboard] = useState<Score[]>([])
 
     useEffect(() => {
         async function getScores() {
@@ -36,6 +37,20 @@ function Scoreboard() {
                 const result: Score[] = await response.json()
 
                 setScores(result)
+
+                const leaderboardResponse = await fetch('/api/leaderboard', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                })
+
+                if (!leaderboardResponse.ok) {
+                    throw new Error('Unable to retrieve leaderboard')
+                }
+
+                const leaderboardResult: Score[] = await leaderboardResponse.json()
+
+                setLeaderboard(leaderboardResult)
 
             } catch (error) {
                 console.error(error)
@@ -67,6 +82,37 @@ function Scoreboard() {
                     {scores.map((score, index) => (
                         <tr key={score.id}>
                             <td>{index + 1}</td>
+                            <td>{formatTheme(score.theme)}</td>
+                            <td>{score.score}</td>
+                            <td>{score.moves}</td>
+                            <td>{formatTime(score.time)}</td>
+                        </tr>
+                    ))}
+                    </tbody>
+                </table>
+            )}
+            <h2>Global Leaderboard</h2>
+
+            {leaderboard.length === 0 ? (
+                <p>No scores yet.</p>
+            ) : (
+                <table className="score-table">
+                    <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Player</th>
+                        <th>Theme</th>
+                        <th>Score</th>
+                        <th>Moves</th>
+                        <th>Time</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    {leaderboard.map((score, index) => (
+                        <tr key={score.id}>
+                            <td>{index + 1}</td>
+                            <td>{score.userName}</td>
                             <td>{formatTheme(score.theme)}</td>
                             <td>{score.score}</td>
                             <td>{score.moves}</td>
