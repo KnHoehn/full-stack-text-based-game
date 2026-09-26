@@ -35,10 +35,13 @@ public class UserController {
 
     // Endpoint for retrieving a user from the database given the username
     @GetMapping("/user/{userName}")
-    public ResponseEntity<User> getUserName(@PathVariable String userName) {
+    public ResponseEntity<UserResponse> getUserName(@PathVariable String userName) {
         // Calls the user service to check if the user exists in the database
         Optional<User> user = userService.getMatchingUserName(userName);
-        return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+
+        return user.map(foundUser -> ResponseEntity.ok(
+                new UserResponse(foundUser.getUserName())
+        )).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     // Endpoint for inserting a new user into the database
