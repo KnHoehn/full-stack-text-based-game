@@ -63,3 +63,13 @@ main {
   font: inherit;
   width: 250px;
 }
+
+.score-table {
+  border-collapse: collapse;
+}
+
+.score-table th,
+.score-table td {
+  padding: 0 15px;
+  text-align: left;
+}

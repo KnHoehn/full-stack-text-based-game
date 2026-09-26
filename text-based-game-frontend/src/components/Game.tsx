@@ -1,18 +1,12 @@
 import { useState } from 'react'
 import type { GameResponse } from '../types/GameResponse.tsx'
+import formatTime from '../utils/formatTime'
 
 type GameProps = {
     gameResponse: GameResponse
     onGameExit: () => void
 }
 
-function formatTime(totalSeconds: number) {
-    const hours = Math.floor(totalSeconds / 3600)
-    const minutes = Math.floor((totalSeconds % 3600) / 60)
-    const seconds = totalSeconds % 60
-
-    return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`
-}
 
 function Game({ gameResponse, onGameExit }: GameProps) {
 

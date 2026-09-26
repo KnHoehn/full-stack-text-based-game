@@ -81,6 +81,11 @@ public class GameService {
             throw new IllegalArgumentException("Game not found.");
         }
 
+        // Prevents the user from entering another command after the game is over
+        if (gameState.getGameOver()) {
+            throw new IllegalStateException("Game is already over.");
+        }
+
         String message = "";
 
         long finalScore = 0;
