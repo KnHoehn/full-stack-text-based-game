@@ -1,4 +1,5 @@
 import type { GameResponse } from '../types/GameResponse.tsx'
+import Scoreboard from './Scoreboard'
 
 type ThemeSelectionProps = {
     onGameStarted: (gameResponse: GameResponse) => void
@@ -52,6 +53,8 @@ function ThemeSelection({ onGameStarted }: ThemeSelectionProps) {
             <button onClick={() => startGame('cyberpunk')}>
                 Cyberpunk
             </button>
+
+            <Scoreboard />
         </div>
     )
 }
