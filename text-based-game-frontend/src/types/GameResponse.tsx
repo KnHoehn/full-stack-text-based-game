@@ -7,4 +7,7 @@ export type GameResponse = {
     inventory: string[]
     gameOver: boolean
     message: string
+    score: number
+    moves: number
+    time: number
 }

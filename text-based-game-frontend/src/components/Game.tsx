@@ -6,6 +6,14 @@ type GameProps = {
     onGameExit: () => void
 }
 
+function formatTime(totalSeconds: number) {
+    const hours = Math.floor(totalSeconds / 3600)
+    const minutes = Math.floor((totalSeconds % 3600) / 60)
+    const seconds = totalSeconds % 60
+
+    return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`
+}
+
 function Game({ gameResponse, onGameExit }: GameProps) {
 
     const [gameState, setGameState] = useState(gameResponse)
@@ -40,11 +48,6 @@ function Game({ gameResponse, onGameExit }: GameProps) {
             }
 
             const result: GameResponse = await response.json()
-
-            if (result.gameOver) {
-                onGameExit()
-                return
-            }
 
             if (result.message === 'instructions') {
                 setShowInstructions(true)
@@ -81,42 +84,62 @@ function Game({ gameResponse, onGameExit }: GameProps) {
                 </>
             )}
 
-            <p>{gameState.message}</p>
+            <p style={{ whiteSpace: 'pre-line' }}>{gameState.message}</p>
 
-            <h3>Current Room</h3>
+            {!gameState.gameOver && (
+                <p>You are in the {gameState.currentRoom}.</p>
+            )}
 
-            <p>{gameState.currentRoom}</p>
+            {gameState.gameOver && (
+                <>
+                    <p>Score: {gameState.score}</p>
+                    <p>Total Moves: {gameState.moves}</p>
+                    <p>Total Time: {formatTime(gameState.time)}</p>
+                </>
+            )}
 
             {gameState.itemDescription && (
                 <p>{gameState.itemDescription}</p>
             )}
 
-            <h3>Inventory</h3>
+            {!gameState.gameOver && (
+                <>
+                    <h3>Inventory</h3>
 
-            {gameState.inventory.length === 0 ? (
-                <p>Your inventory is empty.</p>
-            ) : (
-                <ul>
-                    {gameState.inventory.map((item) => (
-                        <li key={item}>{item}</li>
-                    ))}
-                </ul>
+                    {gameState.inventory.length === 0 ? (
+                        <p>Your inventory is empty.</p>
+                    ) : (
+                        <ul>
+                            {gameState.inventory.map((item) => (
+                                <li key={item}>{item}</li>
+                            ))}
+                        </ul>
+                    )}
+                </>
             )}
 
             <div className="command-line">
                 <span>&gt;</span>
 
-                <input
-                    type="text"
-                    value={command}
-                    onChange={(event) => setCommand(event.target.value)}
-                    onKeyDown={(event) => {
-                        if (event.key === 'Enter') {
-                            handleCommand()
-                        }
-                    }}
-                    autoFocus
-                />
+                {!gameState.gameOver && (
+                    <input
+                        type="text"
+                        value={command}
+                        onChange={(event) => setCommand(event.target.value)}
+                        onKeyDown={(event) => {
+                            if (event.key === 'Enter') {
+                                handleCommand()
+                            }
+                        }}
+                        autoFocus
+                    />
+                )}
+
+                {gameState.gameOver && (
+                    <button onClick={onGameExit}>
+                        Exit
+                    </button>
+                )}
             </div>
         </div>
     )
