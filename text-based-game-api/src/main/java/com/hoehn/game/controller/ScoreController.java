@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.security.core.Authentication;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,6 +47,14 @@ public class ScoreController {
     @GetMapping("/personal-best/{userName}")
     public ResponseEntity<List<Score>> getPersonalBest(@PathVariable String userName) {
         // Calls te score service to get the user's personal best entries from the database
+        return ResponseEntity.ok(scoreService.getPersonalBest(userName));
+    }
+
+    @GetMapping("/scores/me")
+    public ResponseEntity<List<Score>> getMyScores(Authentication authentication) {
+
+        String userName = authentication.getName();
+
         return ResponseEntity.ok(scoreService.getPersonalBest(userName));
     }
 }
