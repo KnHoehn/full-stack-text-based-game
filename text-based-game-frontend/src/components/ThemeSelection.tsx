@@ -1,7 +1,7 @@
-import type { GameState } from './types/GameState'
+import type { GameResponse } from '../types/GameResponse.tsx'
 
 type ThemeSelectionProps = {
-    onGameStarted: (gameState: GameState) => void
+    onGameStarted: (gameResponse: GameResponse) => void
 }
 
 function ThemeSelection({ onGameStarted }: ThemeSelectionProps) {
@@ -27,9 +27,9 @@ function ThemeSelection({ onGameStarted }: ThemeSelectionProps) {
                 return
             }
 
-            const gameState: GameState = await response.json()
+            const gameResponse: GameResponse = await response.json()
 
-            onGameStarted(gameState)
+            onGameStarted(gameResponse)
 
         } catch (error) {
             console.error(error)

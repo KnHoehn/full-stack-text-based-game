@@ -1,33 +1,36 @@
-import Game from './Game'
 import { useState } from 'react'
 import Login from './Login'
 import ThemeSelection from './ThemeSelection'
-import type { GameState } from './types/GameState'
+import Game from './Game'
+import type { GameResponse } from '../types/GameResponse.tsx'
 
 function Home() {
-
     const [loggedIn, setLoggedIn] = useState(false)
-
-    const [gameState, setGameState] = useState<GameState | null>(null)
+    const [gameResponse, setGameResponse] = useState<GameResponse | null>(null)
 
     return (
         <main>
-            <h1>Text Adventure Game</h1>
-
-            <h2>A Text-Based Adventure</h2>
-
-            <p>
-                Welcome to the text adventure! Log in or create an account to get started.
-            </p>
-
             {!loggedIn ? (
-                <Login onLogin={() => setLoggedIn(true)} />
-            ) : gameState === null ? (
+                <>
+                    <h1>Text Adventure Game</h1>
+
+                    <h2>A Text-Based Adventure</h2>
+
+                    <p>
+                        Welcome to the text adventure! Log in or create an account to get started.
+                    </p>
+
+                    <Login onLogin={() => setLoggedIn(true)} />
+                </>
+            ) : gameResponse === null ? (
                 <ThemeSelection
-                    onGameStarted={(gameState) => setGameState(gameState)}
+                    onGameStarted={(gameResponse) => setGameResponse(gameResponse)}
                 />
             ) : (
-                <Game gameState={gameState} />
+                <Game
+                    gameResponse={gameResponse}
+                    onGameExit={() => setGameResponse(null)}
+                />
             )}
         </main>
     )

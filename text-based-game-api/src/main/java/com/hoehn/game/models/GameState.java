@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.Map;
 
 public class GameState {
 
@@ -13,7 +14,10 @@ public class GameState {
     private String theme;
     private String userName;
     private String currentRoom;
+    private String boss;
+    private String loseBattleMessage;
     private List<String> inventory;
+    private Map<String, Room> rooms;
     private int moves;
     private int moveScore;
     private final long startTime;
@@ -40,6 +44,14 @@ public class GameState {
         this.currentRoom = currentRoom;
     }
 
+    public void setBoss(String boss) {
+        this.boss = boss;
+    }
+
+    public void setLoseBattleMessage(String loseBattleMessage) {
+        this.loseBattleMessage = loseBattleMessage;
+    }
+
     public void setGameOver(boolean gameOver) {
         this.gameOver = gameOver;
     }
@@ -58,6 +70,14 @@ public class GameState {
 
     public String getCurrentRoom() {
         return currentRoom;
+    }
+
+    public String getBoss() {
+        return boss;
+    }
+
+    public String getLoseBattleMessage() {
+        return loseBattleMessage;
     }
 
     public long getStartTime() {
@@ -84,8 +104,16 @@ public class GameState {
 
     public void scorePenalty(int movePenalty) { this.moveScore -= movePenalty; }
 
-    public void addToInventor(String item) {
+    public void addToInventory(String item) {
         inventory.add(item);
+    }
+
+    public Map<String, Room> getRooms() {
+        return rooms;
+    }
+
+    public void setRooms(Map<String, Room> rooms) {
+        this.rooms = rooms;
     }
 
 }

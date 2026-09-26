@@ -94,26 +94,35 @@ function Login({ onLogin }: LoginProps) {
         }
     }
 
-
     return (
         <div>
             <h2>Log In</h2>
 
-            <label htmlFor="username">Username</label>
-            <input
-                id="username"
-                type="text"
-                value={username}
-                onChange={(event) => setUsername(event.target.value)}
-            />
+            <div className="login-line">
+                <label htmlFor="username">Username:</label>
 
-            <label htmlFor="password">Password</label>
-            <input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(event) => setPassword(event.target.value)}
-            />
+                <span>&gt;</span>
+
+                <input
+                    id="username"
+                    type="text"
+                    value={username}
+                    onChange={(event) => setUsername(event.target.value)}
+                />
+            </div>
+
+            <div className="login-line">
+                <label htmlFor="password">Password:</label>
+
+                <span>&gt;</span>
+
+                <input
+                    id="password"
+                    type="password"
+                    value={password}
+                    onChange={(event) => setPassword(event.target.value)}
+                />
+            </div>
 
             <button onClick={handleLogin}>Log In</button>
 
@@ -122,6 +131,7 @@ function Login({ onLogin }: LoginProps) {
             <p>{message}</p>
         </div>
     )
+
 }
 
 export default Login

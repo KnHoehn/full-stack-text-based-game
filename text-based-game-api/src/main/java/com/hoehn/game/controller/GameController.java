@@ -1,8 +1,8 @@
 package com.hoehn.game.controller;
 
+import com.hoehn.game.dto.CommandRequest;
+import com.hoehn.game.dto.GameResponse;
 import com.hoehn.game.dto.GameStartRequest;
-import com.hoehn.game.models.GameState;
-import com.hoehn.game.models.Theme;
 import com.hoehn.game.service.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -23,18 +23,31 @@ public class GameController {
 
     // Endpoint for starting a new game
     @PostMapping("/games")
-    public ResponseEntity<GameState> startGame(
+    public ResponseEntity<GameResponse> startGame(
             @RequestBody GameStartRequest request, Authentication authentication) {
 
         String userName = authentication.getName();
 
         // Creates a new game
-        GameState gameState = gameService.startGame(
+        GameResponse gameResponse = gameService.startGame(
                 userName,
                 request.getTheme()
         );
 
-        return ResponseEntity.ok(gameState);
+        return ResponseEntity.ok(gameResponse);
+    }
+
+    @PostMapping("/games/{gameId}/command")
+    public ResponseEntity<GameResponse> processCommand(
+            @PathVariable String gameId,
+            @RequestBody CommandRequest request) {
+
+        GameResponse gameResponse = gameService.processCommand(
+                gameId,
+                request.getCommand()
+        );
+
+        return ResponseEntity.ok(gameResponse);
     }
 
 }
