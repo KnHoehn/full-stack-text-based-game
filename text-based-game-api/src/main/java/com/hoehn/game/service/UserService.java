@@ -30,6 +30,14 @@ public class UserService {
     // Logs in the user if the username and password matches
     public boolean loginUser(String userName, String password) {
 
+        if (userName == null || userName.isBlank()) {
+            return false;
+        }
+
+        if (password == null || password.isBlank()) {
+            return false;
+        }
+
         // Calls the getMatchingUsernameMethod to find the user in the database given the username and saves the result into matchingUser
         Optional<User> matchingUser = getMatchingUserName(userName);
 
@@ -66,6 +74,14 @@ public class UserService {
     // Saves a new user to the database
     public void createUser(String userName, String password) {
 
+
+        if (userName == null || userName.isBlank()) {
+            throw new IllegalArgumentException("Username cannot be empty.");
+        }
+
+        if (password == null || password.isBlank()) {
+            throw new IllegalArgumentException("Password cannot be empty.");
+        }
 
         // Checks if the username already exists in the database
         Optional<User> matchingUser = getMatchingUserName(userName);
