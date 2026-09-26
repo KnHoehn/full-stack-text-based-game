@@ -129,7 +129,7 @@ function Game({ gameResponse, onGameExit }: GameProps) {
                 )}
 
                 {gameState.gameOver && (
-                    <button className="exit-button" onClick={onGameExit}>
+                    <button onClick={onGameExit}>
                         &gt; Exit
                     </button>
                 )}
