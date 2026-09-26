@@ -92,7 +92,7 @@ function Game({ gameResponse, onGameExit }: GameProps) {
                 </>
             )}
 
-            {gameState.itemDescription && (
+            {!gameState.gameOver && gameState.itemDescription && (
                 <p>{gameState.itemDescription}</p>
             )}
 
