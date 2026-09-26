@@ -73,3 +73,73 @@ main {
   padding: 0 15px;
   text-align: left;
 }
+
+.login-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 20px;
+  align-items: flex-start;
+}
+
+.login-actions button {
+  border: none;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  padding: 0;
+  cursor: pointer;
+}
+
+.login-actions button:hover {
+  text-decoration: underline;
+}
+
+.login-actions button:focus {
+  outline: none;
+  text-decoration: underline;
+}
+
+.theme-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 20px;
+  align-items: flex-start;
+}
+
+.theme-actions button {
+  border: none;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  padding: 0;
+  cursor: pointer;
+}
+
+.theme-actions button:hover {
+  text-decoration: underline;
+}
+
+.theme-actions button:focus {
+  outline: none;
+  text-decoration: underline;
+}
+
+.exit-button {
+  border: none;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  padding: 0;
+  cursor: pointer;
+}
+
+.exit-button:hover {
+  text-decoration: underline;
+}
+
+.exit-button:focus {
+  outline: none;
+  text-decoration: underline;
+}

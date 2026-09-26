@@ -113,7 +113,6 @@ function Game({ gameResponse, onGameExit }: GameProps) {
             )}
 
             <div className="command-line">
-                <span>&gt;</span>
 
                 {!gameState.gameOver && (
                     <input
@@ -130,8 +129,8 @@ function Game({ gameResponse, onGameExit }: GameProps) {
                 )}
 
                 {gameState.gameOver && (
-                    <button onClick={onGameExit}>
-                        Exit
+                    <button className="exit-button" onClick={onGameExit}>
+                        &gt; Exit
                     </button>
                 )}
             </div>

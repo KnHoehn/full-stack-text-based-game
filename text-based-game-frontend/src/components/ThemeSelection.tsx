@@ -42,17 +42,19 @@ function ThemeSelection({ onGameStarted }: ThemeSelectionProps) {
         <div>
             <h2>Choose Your Game Theme</h2>
 
-            <button onClick={() => startGame('space')}>
-                Space
-            </button>
+            <div className="theme-actions">
+                <button onClick={() => startGame('space')}>
+                    &gt; Space
+                </button>
 
-            <button onClick={() => startGame('medieval')}>
-                Medieval
-            </button>
+                <button onClick={() => startGame('medieval')}>
+                    &gt; Medieval
+                </button>
 
-            <button onClick={() => startGame('cyberpunk')}>
-                Cyberpunk
-            </button>
+                <button onClick={() => startGame('cyberpunk')}>
+                    &gt; Cyberpunk
+                </button>
+            </div>
 
             <Scoreboard />
         </div>
