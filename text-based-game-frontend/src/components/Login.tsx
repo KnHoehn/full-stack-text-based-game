@@ -35,6 +35,12 @@ function Login({ onLogin }: LoginProps) {
     }
 
     async function handleLogin() {
+
+        if (username.trim() === '' || password.trim() === '') {
+            setMessage('Username and password are required.')
+            return
+        }
+
         try {
             const response = await fetch('/api/login', {
                 method: 'POST',
@@ -67,6 +73,12 @@ function Login({ onLogin }: LoginProps) {
     }
 
     async function handleCreateAccount() {
+
+        if (username.trim() === '' || password.trim() === '') {
+            setMessage('Username and password are required.')
+            return
+        }
+
         try {
             const response = await fetch('/api/register', {
                 method: 'POST',
