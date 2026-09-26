@@ -1,6 +1,7 @@
 package com.hoehn.game.service;
 
 import com.hoehn.game.dto.GameResponse;
+import com.hoehn.game.entities.Score;
 import com.hoehn.game.models.GameState;
 import com.hoehn.game.models.Room;
 import com.hoehn.game.models.Theme;
@@ -16,9 +17,14 @@ public class GameService {
 
     private final ThemeService themeService;
 
+    private final ScoreService scoreService;
+
+    private static final int NUM_ITEMS_TO_WIN = 6;
+
     @Autowired
-    public GameService(ThemeService themeService) {
+    public GameService(ThemeService themeService, ScoreService scoreService) {
         this.themeService = themeService;
+        this.scoreService = scoreService;
     }
 
     private final Map<String, GameState> activeGames = new HashMap<>();
@@ -39,6 +45,10 @@ public class GameService {
         // Sets the theme in the gamestate
         gameState.setTheme(theme.getName());
 
+        gameState.setBoss(theme.getBoss());
+
+        gameState.setLoseBattleMessage(theme.getBattleLossMessage());
+
         // Sets the current room given the chose theme in the gamestate
         gameState.setCurrentRoom(theme.getStartingRoom());
 
@@ -55,7 +65,10 @@ public class GameService {
                 startingRoom.getItemDescription(),
                 gameState.getInventory(),
                 gameState.getGameOver(),
-                "Game started."
+                "Game started.",
+                0,
+                0,
+                0
         );
 
     }
@@ -69,6 +82,10 @@ public class GameService {
         }
 
         String message = "";
+
+        long finalScore = 0;
+
+        long totalTime = 0;
 
         String normalizedCommand = command.trim().toLowerCase();
 
@@ -88,13 +105,63 @@ public class GameService {
 
             if (connectedRooms.containsKey(direction)) {
 
-                String nextRoom = connectedRooms.get(direction);
+                String nextRoomName = connectedRooms.get(direction);
 
-                gameState.setCurrentRoom(nextRoom);
+                gameState.setCurrentRoom(nextRoomName);
 
                 gameState.incrementMoves();
 
-                message = "You moved " + direction + ".";
+                if (gameState.getMoves() > 10) {
+                    gameState.scorePenalty(10);
+                }
+
+                Room nextRoom = gameState.getRooms().get(nextRoomName);
+
+                if (nextRoom.getBoss()) {
+
+                    totalTime = (System.currentTimeMillis()
+                            - gameState.getStartTime()) / 1000;
+
+                    int finalMoveScore = gameState.getMoveScore();
+
+                    if (gameState.getInventory().size() == NUM_ITEMS_TO_WIN) {
+                        message = "You see the " + gameState.getBoss() + ".\n"
+                                + "A battle ensues.\n"
+                                + "...\n"
+                                + "Congratulations! You defeated "
+                                + gameState.getBoss() + "!";
+
+                    } else {
+                        message = "You see the " + gameState.getBoss() + ".\n"
+                                + "A battle ensues...\n"
+                                + "...\n"
+                                + gameState.getLoseBattleMessage() + " Game over";
+
+                        gameState.setGameOver(true);
+
+                        finalMoveScore = 0;
+                    }
+
+                    finalScore = ScoreCalculator.calculateScore(
+                            totalTime,
+                            finalMoveScore
+                    );
+
+                    Score score = new Score();
+
+                    score.setUser(gameState.getUserName());
+                    score.setScore((int) finalScore);
+                    score.setMoves(gameState.getMoves());
+                    score.setTime((int) totalTime);
+                    score.setTheme(gameState.getTheme());
+
+                    scoreService.createScore(score);
+
+                    gameState.setGameOver(true);
+
+                } else {
+                    message = "You moved " + direction + ".";
+                }
 
             } else {
 
@@ -138,7 +205,10 @@ public class GameService {
                 currentRoom.getItemDescription(),
                 gameState.getInventory(),
                 gameState.getGameOver(),
-                message
+                message,
+                finalScore,
+                gameState.getMoves(),
+                totalTime
         );
     }
 

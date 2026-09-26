@@ -14,6 +14,8 @@ public class GameState {
     private String theme;
     private String userName;
     private String currentRoom;
+    private String boss;
+    private String loseBattleMessage;
     private List<String> inventory;
     private Map<String, Room> rooms;
     private int moves;
@@ -42,6 +44,14 @@ public class GameState {
         this.currentRoom = currentRoom;
     }
 
+    public void setBoss(String boss) {
+        this.boss = boss;
+    }
+
+    public void setLoseBattleMessage(String loseBattleMessage) {
+        this.loseBattleMessage = loseBattleMessage;
+    }
+
     public void setGameOver(boolean gameOver) {
         this.gameOver = gameOver;
     }
@@ -60,6 +70,14 @@ public class GameState {
 
     public String getCurrentRoom() {
         return currentRoom;
+    }
+
+    public String getBoss() {
+        return boss;
+    }
+
+    public String getLoseBattleMessage() {
+        return loseBattleMessage;
     }
 
     public long getStartTime() {

@@ -12,6 +12,9 @@ public class GameResponse {
     private List<String> inventory;
     private boolean gameOver;
     private String message;
+    private long score;
+    private int moves;
+    private long time;
 
     public GameResponse(
             String gameId,
@@ -21,7 +24,10 @@ public class GameResponse {
             String itemDescription,
             List<String> inventory,
             boolean gameOver,
-            String message) {
+            String message,
+            long score,
+            int moves,
+            long time) {
 
         this.gameId = gameId;
         this.gameName = gameName;
@@ -31,6 +37,9 @@ public class GameResponse {
         this.inventory = inventory;
         this.gameOver = gameOver;
         this.message = message;
+        this.score = score;
+        this.moves = moves;
+        this.time = time;
     }
 
     public String getGameId() {
@@ -63,5 +72,17 @@ public class GameResponse {
 
     public String getMessage() {
         return message;
+    }
+
+    public long getScore() {
+        return score;
+    }
+
+    public int getMoves() {
+        return moves;
+    }
+
+    public long getTime() {
+        return time;
     }
 }
