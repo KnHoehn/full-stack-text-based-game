@@ -8,6 +8,11 @@ function Home() {
     const [loggedIn, setLoggedIn] = useState(false)
     const [gameResponse, setGameResponse] = useState<GameResponse | null>(null)
 
+    function handleLogout() {
+        localStorage.removeItem('token')
+        setLoggedIn(false)
+    }
+
     return (
         <main>
             {!loggedIn ? (
@@ -25,6 +30,7 @@ function Home() {
             ) : gameResponse === null ? (
                 <ThemeSelection
                     onGameStarted={(gameResponse) => setGameResponse(gameResponse)}
+                    onLogout={handleLogout}
                 />
             ) : (
                 <Game

@@ -3,9 +3,10 @@ import Scoreboard from './Scoreboard'
 
 type ThemeSelectionProps = {
     onGameStarted: (gameResponse: GameResponse) => void
+    onLogout: () => void
 }
 
-function ThemeSelection({ onGameStarted }: ThemeSelectionProps) {
+function ThemeSelection({ onGameStarted, onLogout }: ThemeSelectionProps) {
 
     async function startGame(theme: string) {
 
@@ -53,6 +54,12 @@ function ThemeSelection({ onGameStarted }: ThemeSelectionProps) {
 
                 <button onClick={() => startGame('cyberpunk')}>
                     &gt; Cyberpunk
+                </button>
+            </div>
+
+            <div className="login-actions">
+                <button onClick={onLogout}>
+                    &gt; Log Out
                 </button>
             </div>
 
