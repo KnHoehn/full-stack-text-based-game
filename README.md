@@ -187,7 +187,7 @@ CREATE TABLE score_board (
     moves INT NOT NULL,
     time INT NOT NULL,
     theme VARCHAR(255) NOT NULL,
-    FOREIGN KEY (user_name) REFERENCES users(user_name)
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 ```
 
