@@ -4,6 +4,7 @@ import com.hoehn.game.entities.Score;
 import com.hoehn.game.repository.ScoreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.hoehn.game.dto.ScoreResponse;
 
 import java.util.List;
 
@@ -24,16 +25,33 @@ public class ScoreService {
     }
 
     // Calls the score repository to retrieve the top 10 scores in descending order
-    public List<Score> getLeaderboard() {
+    public List<ScoreResponse> getLeaderboard() {
 
-        return scoreRepository.findTop10ByOrderByScoreDesc();
+        return scoreRepository.findTop10ByOrderByScoreDesc()
+                .stream()
+                .map(this::convertToResponse)
+                .toList();
+    }
+
+    public List<ScoreResponse> getPersonalBest(String userName) {
+
+        // Calls the score repository to retrieve the top 10 scores from a user in descending order
+        return scoreRepository.findTop10ByUser_UserNameOrderByScoreDesc(userName)
+                .stream()
+                .map(this::convertToResponse)
+                .toList();
 
     }
 
-    public List<Score> getPersonalBest(String userName) {
+    private ScoreResponse convertToResponse(Score score) {
 
-        // Calls the score repository to retrieve the top 10 scores from a user in descending order
-        return scoreRepository.findTop10ByUserNameOrderByScoreDesc(userName);
-
+        return new ScoreResponse(
+                score.getId(),
+                score.getUser().getUserName(),
+                score.getScore(),
+                score.getMoves(),
+                score.getTime(),
+                score.getTheme()
+        );
     }
 }

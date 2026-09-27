@@ -8,6 +8,7 @@ import com.hoehn.game.models.Theme;
 import com.hoehn.game.models.World;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.hoehn.game.entities.User;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,12 +20,19 @@ public class GameService {
 
     private final ScoreService scoreService;
 
+    private final UserService userService;
+
     private static final int NUM_ITEMS_TO_WIN = 6;
 
     @Autowired
-    public GameService(ThemeService themeService, ScoreService scoreService) {
+    public GameService(
+            ThemeService themeService,
+            ScoreService scoreService,
+            UserService userService) {
+
         this.themeService = themeService;
         this.scoreService = scoreService;
+        this.userService = userService;
     }
 
     private final Map<String, GameState> activeGames = new HashMap<>();
@@ -154,7 +162,10 @@ public class GameService {
 
                     Score score = new Score();
 
-                    score.setUser(gameState.getUserName());
+                    User user = userService.getMatchingUserName(gameState.getUserName())
+                            .orElseThrow(() -> new IllegalArgumentException("User not found."));
+
+                    score.setUser(user);
                     score.setScore((int) finalScore);
                     score.setMoves(gameState.getMoves());
                     score.setTime((int) totalTime);
