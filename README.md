@@ -119,8 +119,6 @@ The database currently contains tables for:
 
 Each scoreboard entry is associated with a user through a foreign key relationship between score_board.user_id and users.user_id. This allows scores to reference the user's unique database ID rather than storing the username directly in the scoreboard table.
 
-The database schema was expanded from the original console application to support the full-stack version.
-
 ## API
 
 The Spring Boot application exposes REST endpoints for authentication, game functionality, and scores. Protected endpoints require a valid JWT.
