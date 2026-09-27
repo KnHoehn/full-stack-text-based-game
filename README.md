@@ -90,13 +90,9 @@ The user interface was intentionally designed with a terminal-inspired aesthetic
 
 ## Game Mechanics
 
-The player begins with a base move score of 1,000 points.
-
-* The first 10 moves do not reduce the move score.
-* Each additional movement reduces the move score by 10 points.
 * The player must collect all 6 required items before reaching the boss.
 * Reaching the boss without all required items results in a game loss.
-* The final score is calculated using the player's move score and completion time.
+* The final score is calculated using the player's total moves and completion time.
 * Completed games are saved to the database and appear on the leaderboard.
 
 ## Authentication
@@ -125,24 +121,7 @@ The database schema was expanded from the original console application to suppor
 
 ## API
 
-The Spring Boot application exposes REST endpoints for authentication, game functionality, and scores.
-
-Examples include:
-
-```text
-POST /register
-POST /login
-
-GET  /user/me
-
-POST /games
-POST /games/{gameId}/command
-
-GET  /scores/me
-GET  /leaderboard
-```
-
-Protected endpoints require a valid JWT.
+The Spring Boot application exposes REST endpoints for authentication, game functionality, and scores. Protected endpoints require a valid JWT.
 
 ## My Contributions
 
