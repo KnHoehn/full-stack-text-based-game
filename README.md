@@ -160,16 +160,41 @@ The Spring Boot application exposes REST endpoints for authentication, game func
 CREATE DATABASE game_db;
 ```
 
-3. Create the required database tables using the schema provided in this repository.
+3. Select the database:
 
-4. Configure the database connection and JWT secret using the application's local configuration.
+```sql
+USE game_db;
+```
 
-5. Start the Spring Boot application.
+4. Create the `users` table:
 
-The backend will run on:
+```sql
+CREATE TABLE users (
+    user_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_name VARCHAR(255) NOT NULL UNIQUE,
+    user_password VARCHAR(255) NOT NULL,
+    salt VARCHAR(255) NOT NULL
+);
+```
 
-```text
-http://localhost:8080
+5. Create the `score_board` table:
+
+```sql
+CREATE TABLE score_board (
+    score_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_name VARCHAR(255) NOT NULL,
+    score INT NOT NULL,
+    moves INT NOT NULL,
+    time INT NOT NULL,
+    theme VARCHAR(255) NOT NULL,
+    FOREIGN KEY (user_name) REFERENCES users(user_name)
+);
+```
+
+6. Configure the database connection and JWT secret using the application's local configuration.
+
+7. Start the Spring Boot application.
+
 ```
 
 ### Frontend Setup
