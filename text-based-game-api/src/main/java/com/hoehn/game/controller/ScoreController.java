@@ -23,10 +23,10 @@ public class ScoreController {
     @GetMapping("/leaderboard")
     public ResponseEntity<List<ScoreResponse>> getLeaderboard() {
 
-        // calls the score service to get the leaderboard entries from the database
         return ResponseEntity.ok(scoreService.getLeaderboard());
     }
 
+    // Endpoint for retrieving the current user's top ten scores
     @GetMapping("/scores/me")
     public ResponseEntity<List<ScoreResponse>> getMyScores(Authentication authentication) {
 

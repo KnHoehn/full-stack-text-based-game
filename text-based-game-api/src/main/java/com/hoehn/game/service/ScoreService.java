@@ -25,7 +25,7 @@ public class ScoreService {
 
     }
 
-    // Calls the score repository to retrieve the top 10 scores in descending order
+    // Retrieves the top 10 scores in descending order
     public List<ScoreResponse> getLeaderboard() {
 
         return scoreRepository.findTop10ByOrderByScoreDesc()
@@ -34,7 +34,7 @@ public class ScoreService {
                 .toList();
     }
 
-    // Calls the score repository to retrieve the top 10 scores from a user in descending order
+    // Retrieves the top 10 scores for the user in descending order
     public List<ScoreResponse> getPersonalBest(String userName) {
 
         return scoreRepository.findTop10ByUser_UserNameOrderByScoreDesc(userName)
@@ -44,7 +44,7 @@ public class ScoreService {
 
     }
 
-    //  Creates a score response that can be sent to the frontend
+    // Creates a score response that can be sent to the frontend
     private ScoreResponse convertToResponse(Score score) {
 
         return new ScoreResponse(

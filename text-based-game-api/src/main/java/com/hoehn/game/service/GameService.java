@@ -20,7 +20,7 @@ public class GameService {
 
     private final GameWorldService gameWorldService;
 
-    // Variable constant that represents the number of items the player needs to win the game
+    // Constant that represents the number of items the player needs to win the game
     private static final int NUM_ITEMS_TO_WIN = 6;
 
     @Autowired
@@ -34,13 +34,12 @@ public class GameService {
         this.gameWorldService = gameWorldService;
     }
 
-    // Variable that holds the current active game sessions
+    // Holds the current active game sessions
     private final Map<String, GameState> activeGames = new HashMap<>();
 
-    // This method starts the game
+    // Starts a new game
     public GameResponse startGame(String userName, String themeChoice) {
 
-        // Starts a new game
         GameState gameState = new GameState();
 
         // Ties the game to the user
@@ -52,7 +51,7 @@ public class GameService {
         // Creates the game world given the chosen theme
         gameState.setRooms(gameWorldService.createRooms(theme));
 
-        // Sets the starting variables to the gamestate
+        // Sets the starting variables for the game state
         gameState.setTheme(theme.getName());
         gameState.setBoss(theme.getBoss());
         gameState.setLoseBattleMessage(theme.getBattleLossMessage());
@@ -84,26 +83,31 @@ public class GameService {
     // This method determines what to do, given the user's command input
     public GameResponse processCommand(String gameId, String command) {
 
+        // Validates the player's game
         GameState gameState = validateGame(gameId);
 
         String message = "";
-
         long finalScore = 0;
-
         long totalTime = 0;
 
         String normalizedCommand = command.trim().toLowerCase();
 
+        // Retrieves the current room
+        Room currentRoom = gameState.getRooms()
+                .get(gameState.getCurrentRoom());
+
+        // If the user inputs a valid move command, processes the movement
         if (normalizedCommand.equals("go north")
                 || normalizedCommand.equals("go south")
                 || normalizedCommand.equals("go east")
                 || normalizedCommand.equals("go west")) {
 
-            message = processMovement(gameState, normalizedCommand);
+            message = processMovement(gameState, normalizedCommand, currentRoom);
 
-            Room currentRoom = gameState.getRooms()
+            currentRoom = gameState.getRooms()
                     .get(gameState.getCurrentRoom());
 
+            // If the current room contains the boss, processes the end game results
             if (currentRoom.getBoss()) {
 
                 EndGameResult result = processEndGame(gameState);
@@ -113,22 +117,24 @@ public class GameService {
                 totalTime = result.totalTime();
             }
 
+            // If the player is trying to pick up an item, processes that command
         } else if (normalizedCommand.startsWith("get ")) {
 
-            message = processGetItem(gameState, normalizedCommand);
+            message = processGetItem(gameState, normalizedCommand, currentRoom);
 
+            // If the player enters "i", displays the instructions
         }  else if (normalizedCommand.equals("i")) {
             message = "instructions";
 
+            // If the player enters "exit", quits the game
         } else if (normalizedCommand.equals("exit")) {
             gameState.setGameOver(true);
-
+            // Displays a message if the command is invalid
         } else {
             message = "Invalid command. Type 'I' to see the instructions.";
         }
 
-        Room currentRoom = gameState.getRooms().get(gameState.getCurrentRoom());
-
+        // Returns the updated game response information to the front end
         return new GameResponse(
                 gameState.getGameId(),
                 gameState.getTheme(),
@@ -144,6 +150,7 @@ public class GameService {
         );
     }
 
+    // Validates the user's game
     private GameState validateGame(String gameId) {
         GameState gameState = getGame(gameId);
 
@@ -158,6 +165,7 @@ public class GameService {
         return gameState;
     }
 
+    // Processes the user's string to get the direction they are trying to move
     private String getDirection(String command) {
         String direction = command.substring(3);
 
@@ -165,44 +173,52 @@ public class GameService {
                 + direction.substring(1);
     }
 
+    // Processes the player's movement command
     private String processMovement(
             GameState gameState,
-            String command) {
+            String command,
+            Room currentRoom) {
 
+        // Gets the direction from the user's command
         String direction = getDirection(command);
 
-        Room currentRoom = gameState.getRooms()
-                .get(gameState.getCurrentRoom());
-
+        // Retrieves what rooms are connected to the current one
         Map<String, String> connectedRooms =
                 currentRoom.getConnectedRooms();
 
+        // If there are no connected rooms in the direction, returns an error message
         if (!connectedRooms.containsKey(direction)) {
             return "You cannot go that way.";
         }
 
+        // Gets the connected room that corresponds with the direction the player is moving
         String nextRoomName = connectedRooms.get(direction);
 
+        // Sets the current room to the next room
         gameState.setCurrentRoom(nextRoomName);
 
+        // Increments the player's move count
         gameState.incrementMoves();
 
+        // Applies a 10-point penalty for each move over 10 moves
         if (gameState.getMoves() > 10) {
             gameState.scorePenalty(10);
         }
 
+        // Returns a message saying which direction the player moved
         return "You moved " + direction + ".";
     }
 
+    // Processes the player's command if they are trying to pick up an item
     private String processGetItem(
             GameState gameState,
-            String command) {
+            String command,
+            Room currentRoom) {
 
+        // Gets the name of the item the user is trying to pick up
         String itemName = command.substring(4).trim();
 
-        Room currentRoom = gameState.getRooms()
-                .get(gameState.getCurrentRoom());
-
+        // Adds the item to inventory if that item is present in the room
         if (currentRoom.getItem() != null
                 && currentRoom.getItem().equalsIgnoreCase(itemName)) {
 
@@ -213,10 +229,11 @@ public class GameService {
             return "You picked up the " + itemName + ".";
         }
 
+        // Otherwise tells the player there is no such item in the room
         return "That item is not here.";
     }
 
-    // Record that holds the end game results
+    // Record that will hold the end game results
     private record EndGameResult(
             String message,
             long finalScore,
@@ -230,7 +247,7 @@ public class GameService {
         long totalTime = (System.currentTimeMillis()
                 - gameState.getStartTime()) / 1000;
 
-        // Gets the player's final move count
+        // Gets the player's final move score
         int finalMoveScore = gameState.getMoveScore();
 
         String message;
@@ -241,7 +258,7 @@ public class GameService {
             message = "You see the " + gameState.getBoss() + ".\n"
                     + "A battle ensues.\n"
                     + "...\n"
-                    + "Congratulations! You defeated "
+                    + "Congratulations! You defeated the "
                     + gameState.getBoss() + "!";
 
             // If player lost, displays losing message and zeros out the move score
@@ -266,7 +283,7 @@ public class GameService {
         // Creates a new score object
         Score score = new Score();
 
-        // Creates a new user object from the currently logged-in user
+        // Retrieves the current user from the database
         User user = userService.getMatchingUserName(gameState.getUserName())
                 .orElseThrow(() -> new IllegalArgumentException("User not found."));
 
@@ -280,7 +297,7 @@ public class GameService {
         // Saves the score into the database
         scoreService.createScore(score);
 
-        // Tell the program that game has ended
+        // Set the game as over
         gameState.setGameOver(true);
 
         return new EndGameResult(message, finalScore, totalTime);

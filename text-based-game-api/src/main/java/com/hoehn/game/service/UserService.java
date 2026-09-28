@@ -24,7 +24,7 @@ public class UserService {
         this.random = new SecureRandom();
     }
 
-    // Calls the user repository to retrieve the user from the database given the username
+    // Retrieves a user from the database by username
     public Optional<User> getMatchingUserName(String userName) {
         return userRepository.findByUserName(userName);
     }
@@ -40,20 +40,20 @@ public class UserService {
             return false;
         }
 
-        // Calls the getMatchingUsernameMethod to find the user in the database given the username and saves the result into matchingUser
+        // Retrieves the user matching the provided username
         Optional<User> matchingUser = getMatchingUserName(userName);
 
-        // If no username matches, return false
+        // Returns false if no username matches
         if (matchingUser.isEmpty()) {
             return false;
         }
 
-        // Retrieves the optional user into a user object
+        // Retrieves the user from the Optional
         User user = matchingUser.get();
 
         try {
 
-            // Decrypts the password from the database and checks to see if it matches the user-entered password
+            // Hashes the entered password with the stored salt and compares it to the stored password
 
             byte[] decodedSalt = Base64.getDecoder().decode(user.getSalt());
 
@@ -64,7 +64,7 @@ public class UserService {
 
             String saltedPassword = Base64.getEncoder().encodeToString(digest);
 
-            // Returns a boolean result if the password was correct or not
+            // Returns whether the password matches
             return saltedPassword.equals(user.getPassword());
 
         } catch (NoSuchAlgorithmException e) {
