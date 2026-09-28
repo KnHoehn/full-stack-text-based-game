@@ -258,7 +258,7 @@ public class GameService {
             message = "You see the " + gameState.getBoss() + ".\n"
                     + "A battle ensues.\n"
                     + "...\n"
-                    + "Congratulations! You defeated "
+                    + "Congratulations! You defeated the "
                     + gameState.getBoss() + "!";
 
             // If player lost, displays losing message and zeros out the move score
