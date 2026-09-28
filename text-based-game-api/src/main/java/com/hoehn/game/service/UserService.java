@@ -4,7 +4,6 @@ import com.hoehn.game.entities.User;
 import com.hoehn.game.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -17,9 +16,12 @@ public class UserService {
 
     private final UserRepository userRepository;
 
+    private final SecureRandom random;
+
     @Autowired
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
+        this.random = new SecureRandom();
     }
 
     // Calls the user repository to retrieve the user from the database given the username
@@ -66,7 +68,7 @@ public class UserService {
             return saltedPassword.equals(user.getPassword());
 
         } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException("Unable to decrypt password", e);
+            throw new IllegalStateException("Unable to hash password.", e);
         }
 
     }
@@ -75,10 +77,12 @@ public class UserService {
     public void createUser(String userName, String password) {
 
 
+        // Ensures username field is not empty
         if (userName == null || userName.isBlank()) {
             throw new IllegalArgumentException("Username cannot be empty.");
         }
 
+        // Ensures password field is not empty
         if (password == null || password.isBlank()) {
             throw new IllegalArgumentException("Password cannot be empty.");
         }
@@ -86,7 +90,6 @@ public class UserService {
         // Checks if the username already exists in the database
         Optional<User> matchingUser = getMatchingUserName(userName);
 
-        // If no username matches, continue
         if (matchingUser.isPresent()) {
             throw new IllegalArgumentException("Username already exists.");
         }
@@ -95,10 +98,8 @@ public class UserService {
 
                 // Hashes the password before saving to the database
 
-                SecureRandom RANDOM = new SecureRandom();
-
                 byte[] salt = new byte[16];
-                RANDOM.nextBytes(salt);
+                random.nextBytes(salt);
 
                 MessageDigest md;
                 md = MessageDigest.getInstance("SHA-512");
@@ -118,7 +119,7 @@ public class UserService {
                 userRepository.save(user);
 
             } catch (NoSuchAlgorithmException e) {
-                throw new RuntimeException("Unable to encrypt password", e);
-            }
+        throw new IllegalStateException("Unable to hash password.", e);
+    }
     }
 }

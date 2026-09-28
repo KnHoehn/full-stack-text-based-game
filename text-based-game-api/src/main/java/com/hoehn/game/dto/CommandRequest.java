@@ -1,5 +1,7 @@
 package com.hoehn.game.dto;
 
+// DTO for receiving a player's game command from the frontend.
+
 public class CommandRequest {
 
     private String command;

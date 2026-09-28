@@ -13,11 +13,20 @@ import org.springframework.stereotype.Service;
 @Service
 public final class GameWorldService {
 
-    /** This method creates the game theme given the theme choice from the user.
-     *
-     * @param filePath the filepath for the json of the theme the player chose.
-     * @return the theme of the game.
-     */
+    // This method loads the corresponding JSON file given the chosen theme
+    public Theme chooseTheme(final String themeChoice) {
+
+        String filePath = switch (themeChoice) {
+            case "space" -> "src/main/resources/space-theme.json";
+            case "medieval" -> "src/main/resources/medieval-theme.json";
+            case "cyberpunk" -> "src/main/resources/cyberpunk-theme.json";
+            default -> throw new IllegalArgumentException("Invalid theme");
+        };
+
+        return createTheme(filePath);
+    }
+
+    // method creates the game theme given theme file path
     public Theme createTheme(final String filePath) {
 
         Theme theme = new Theme();
@@ -30,18 +39,14 @@ public final class GameWorldService {
             theme = gson.fromJson(reader, Theme.class);
 
 
-        } catch (IOException e) {
+        } catch (IOException _) {
             System.err.println("Unable to open file");
         }
 
         return theme;
     }
 
-    /**This method creates the rooms of the game given the theme.
-     *
-     * @param theme the theme of the game.
-     * @return the rooms mapping.
-     * */
+    // This method creates the rooms and maps the game world given the theme.
     public Map<String, Room> createRooms(final Theme theme) {
 
         Map<String, Room> rooms = new HashMap<>();

@@ -8,14 +8,11 @@ import com.hoehn.game.models.Theme;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.hoehn.game.entities.User;
-
 import java.util.HashMap;
 import java.util.Map;
 
 @Service
 public class GameService {
-
-    private final ThemeService themeService;
 
     private final ScoreService scoreService;
 
@@ -23,23 +20,24 @@ public class GameService {
 
     private final GameWorldService gameWorldService;
 
+    // Variable constant that represents the number of items the player needs to win the game
     private static final int NUM_ITEMS_TO_WIN = 6;
 
     @Autowired
     public GameService(
-            ThemeService themeService,
             ScoreService scoreService,
             UserService userService,
             GameWorldService gameWorldService) {
 
-        this.themeService = themeService;
         this.scoreService = scoreService;
         this.userService = userService;
         this.gameWorldService = gameWorldService;
     }
 
+    // Variable that holds the current active game sessions
     private final Map<String, GameState> activeGames = new HashMap<>();
 
+    // This method starts the game
     public GameResponse startGame(String userName, String themeChoice) {
 
         // Starts a new game
@@ -49,25 +47,24 @@ public class GameService {
         gameState.setUserName(userName);
 
         // Selects the theme given the user's choice
-        Theme theme = themeService.chooseTheme(themeChoice);
+        Theme theme = gameWorldService.chooseTheme(themeChoice);
 
+        // Creates the game world given the chosen theme
         gameState.setRooms(gameWorldService.createRooms(theme));
 
-        // Sets the theme in the gamestate
+        // Sets the starting variables to the gamestate
         gameState.setTheme(theme.getName());
-
         gameState.setBoss(theme.getBoss());
-
         gameState.setLoseBattleMessage(theme.getBattleLossMessage());
-
-        // Sets the current room given the chose theme in the gamestate
         gameState.setCurrentRoom(theme.getStartingRoom());
 
         // Adds the game to the list of active games
         activeGames.put(gameState.getGameId(), gameState);
 
+        // Sets the room the player starts in
         Room startingRoom = gameState.getRooms().get(gameState.getCurrentRoom());
 
+        // Returns a game response to the front end
         return new GameResponse(
                 gameState.getGameId(),
                 theme.getName(),
@@ -84,8 +81,7 @@ public class GameService {
 
     }
 
-
-
+    // This method determines what to do, given the user's command input
     public GameResponse processCommand(String gameId, String command) {
 
         GameState gameState = validateGame(gameId);
@@ -220,21 +216,26 @@ public class GameService {
         return "That item is not here.";
     }
 
+    // Record that holds the end game results
     private record EndGameResult(
             String message,
             long finalScore,
             long totalTime
     ) {}
 
+    // Determines if the user won or lost and calculates the end game score
     private EndGameResult processEndGame(GameState gameState) {
 
+        // Calculates the total elapsed time and stores it
         long totalTime = (System.currentTimeMillis()
                 - gameState.getStartTime()) / 1000;
 
+        // Gets the player's final move count
         int finalMoveScore = gameState.getMoveScore();
 
         String message;
 
+        // If player wins, displays winning message
         if (gameState.getInventory().size() == NUM_ITEMS_TO_WIN) {
 
             message = "You see the " + gameState.getBoss() + ".\n"
@@ -243,6 +244,7 @@ public class GameService {
                     + "Congratulations! You defeated "
                     + gameState.getBoss() + "!";
 
+            // If player lost, displays losing message and zeros out the move score
         } else {
 
             message = "You see the " + gameState.getBoss() + ".\n"
@@ -255,30 +257,36 @@ public class GameService {
             finalMoveScore = 0;
         }
 
+        // Calls the ScoreCalculator class to calculate the final score
         long finalScore = ScoreCalculator.calculateScore(
                 totalTime,
                 finalMoveScore
         );
 
+        // Creates a new score object
         Score score = new Score();
 
+        // Creates a new user object from the currently logged-in user
         User user = userService.getMatchingUserName(gameState.getUserName())
                 .orElseThrow(() -> new IllegalArgumentException("User not found."));
 
+        // Sets the score object values
         score.setUser(user);
         score.setScore((int) finalScore);
         score.setMoves(gameState.getMoves());
         score.setTime((int) totalTime);
         score.setTheme(gameState.getTheme());
 
+        // Saves the score into the database
         scoreService.createScore(score);
 
+        // Tell the program that game has ended
         gameState.setGameOver(true);
 
         return new EndGameResult(message, finalScore, totalTime);
     }
 
-
+    // Returns the active game
     public GameState getGame(String gameId) {
 
         return activeGames.get(gameId);

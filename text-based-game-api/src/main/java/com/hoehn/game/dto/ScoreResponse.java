@@ -1,5 +1,7 @@
 package com.hoehn.game.dto;
 
+// DTO for sending score information to the frontend.
+
 public class ScoreResponse {
 
     private int id;

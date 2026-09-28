@@ -18,9 +18,10 @@ public class ScoreService {
         this.scoreRepository = scoreRepository;
     }
 
-    public Score createScore(Score score) {
+    // Saves the score to the database
+    public void createScore(Score score) {
 
-        return scoreRepository.save(score);
+        scoreRepository.save(score);
 
     }
 
@@ -33,9 +34,9 @@ public class ScoreService {
                 .toList();
     }
 
+    // Calls the score repository to retrieve the top 10 scores from a user in descending order
     public List<ScoreResponse> getPersonalBest(String userName) {
 
-        // Calls the score repository to retrieve the top 10 scores from a user in descending order
         return scoreRepository.findTop10ByUser_UserNameOrderByScoreDesc(userName)
                 .stream()
                 .map(this::convertToResponse)
@@ -43,6 +44,7 @@ public class ScoreService {
 
     }
 
+    //  Creates a score response that can be sent to the frontend
     private ScoreResponse convertToResponse(Score score) {
 
         return new ScoreResponse(

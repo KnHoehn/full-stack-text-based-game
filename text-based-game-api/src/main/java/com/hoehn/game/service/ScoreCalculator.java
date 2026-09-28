@@ -2,20 +2,15 @@ package com.hoehn.game.service;
 
 public final class ScoreCalculator {
 
-    /** Variable representing the amount of seconds in 10 minutes. */
+    // Variable constant representing the amount of seconds in 10 minutes.
     private static final int NUM_SECONDS_IN_TEN_MINUTES = 600;
-    /** Variable to zero out the user's scores if they go negative. */
+    // Variable constant to zero out the user's scores if they go negative.
     private static final int MIN_SCORE = 0;
 
 
     private ScoreCalculator() {}
 
-    /** This method calculates the user's total end score.
-     *
-     * @param totalTime the total time it took the user to reach the boss.
-     * @param moveScore the user's move score at the time of reaching the boss.
-     * @return the user's total score.
-     */
+    // This method calculates the user's total end score.
     public static Long calculateScore(final Long totalTime, final int moveScore) {
 
         int finalMoveScore = moveScore;

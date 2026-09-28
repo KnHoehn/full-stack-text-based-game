@@ -6,6 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class TextBasedGameApiApplication {
 
+    // Starts the Spring Boot application
+
     public static void main(String[] args) {
         SpringApplication.run(TextBasedGameApiApplication.class, args);
     }

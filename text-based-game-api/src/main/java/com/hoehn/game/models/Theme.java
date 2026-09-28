@@ -1,6 +1,6 @@
 package com.hoehn.game.models;
 
-// This model holds the theme information
+// This model holds the game theme information
 
 public class Theme {
 
