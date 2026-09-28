@@ -100,7 +100,7 @@ public class GameService {
                 || normalizedCommand.equals("go east")
                 || normalizedCommand.equals("go west")) {
 
-            message = processMovement(gameState, normalizedCommand);
+            message = processMovement(gameState, normalizedCommand, currentRoom);
 
             currentRoom = gameState.getRooms()
                     .get(gameState.getCurrentRoom());
@@ -164,14 +164,14 @@ public class GameService {
                 + direction.substring(1);
     }
 
+    // Processes the player's movement command
     private String processMovement(
             GameState gameState,
-            String command) {
+            String command,
+            Room currentRoom) {
 
+        // Gets the direction the player is trying to move
         String direction = getDirection(command);
-
-        Room currentRoom = gameState.getRooms()
-                .get(gameState.getCurrentRoom());
 
         Map<String, String> connectedRooms =
                 currentRoom.getConnectedRooms();
@@ -202,6 +202,7 @@ public class GameService {
         // Gets the name of the item the user is trying to pick up
         String itemName = command.substring(4).trim();
 
+        // Adds the item to inventory if that item is present in the room
         if (currentRoom.getItem() != null
                 && currentRoom.getItem().equalsIgnoreCase(itemName)) {
 
@@ -212,10 +213,11 @@ public class GameService {
             return "You picked up the " + itemName + ".";
         }
 
+        // Otherwise tells the player there is no such item
         return "That item is not here.";
     }
 
-    // Record that holds the end game results
+    // Record that will hold the end game results
     private record EndGameResult(
             String message,
             long finalScore,
