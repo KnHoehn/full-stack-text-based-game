@@ -13,7 +13,7 @@ public class JwtService {
 
     private final SecretKey secretKey;
 
-    // Variable constant to time out the user session after eight hours
+    // Constant to time out the user session after eight hours
     private static final long EXPIRATION_TIME = 1000L * 60 * 60 * 8;
 
     public JwtService(@Value("${jwt.secret}") String jwtSecret) {

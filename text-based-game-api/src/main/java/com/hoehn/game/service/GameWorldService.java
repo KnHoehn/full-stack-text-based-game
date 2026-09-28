@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 @Service
 public final class GameWorldService {
 
-    // This method loads the corresponding JSON file given the chosen theme
+    // Loads the JSON file corresponding to the chosen theme
     public Theme chooseTheme(final String themeChoice) {
 
         String filePath = switch (themeChoice) {
@@ -26,14 +26,13 @@ public final class GameWorldService {
         return createTheme(filePath);
     }
 
-    // method creates the game theme given theme file path
+    // Creates the game theme from the specified file
     public Theme createTheme(final String filePath) {
 
         Theme theme = new Theme();
 
         Gson gson = new Gson();
 
-        // Parses the json file and creates the theme object.
         try (Reader reader = new FileReader(filePath)) {
 
             theme = gson.fromJson(reader, Theme.class);
@@ -46,7 +45,7 @@ public final class GameWorldService {
         return theme;
     }
 
-    // This method creates the rooms and maps the game world given the theme.
+    // Creates the game world from the specified theme
     public Map<String, Room> createRooms(final Theme theme) {
 
         Map<String, Room> rooms = new HashMap<>();

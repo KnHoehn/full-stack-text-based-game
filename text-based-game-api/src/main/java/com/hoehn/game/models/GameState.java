@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.Map;
 
-// Model that holds the current state of the players game
+// Model that holds the current state of the player's game
 
 public class GameState {
 
@@ -16,7 +16,7 @@ public class GameState {
     private String currentRoom;
     private String boss;
     private String loseBattleMessage;
-    private List<String> inventory;
+    private final List<String> inventory;
     private Map<String, Room> rooms;
     private int moves;
     private int moveScore;

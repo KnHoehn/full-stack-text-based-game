@@ -2,9 +2,9 @@ package com.hoehn.game.service;
 
 public final class ScoreCalculator {
 
-    // Variable constant representing the amount of seconds in 10 minutes.
+    // Constant representing the amount of seconds in 10 minutes.
     private static final int NUM_SECONDS_IN_TEN_MINUTES = 600;
-    // Variable constant to zero out the user's scores if they go negative.
+    // Constant to zero out the user's scores if they go negative.
     private static final int MIN_SCORE = 0;
 
 

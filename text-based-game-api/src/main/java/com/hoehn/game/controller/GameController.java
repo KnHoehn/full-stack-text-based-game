@@ -28,7 +28,6 @@ public class GameController {
 
         String userName = authentication.getName();
 
-        // Creates a new game
         GameResponse gameResponse = gameService.startGame(
                 userName,
                 request.getTheme()
@@ -37,6 +36,7 @@ public class GameController {
         return ResponseEntity.ok(gameResponse);
     }
 
+    // Endpoint for processing the player's game commands
     @PostMapping("/games/{gameId}/command")
     public ResponseEntity<GameResponse> processCommand(
             @PathVariable String gameId,

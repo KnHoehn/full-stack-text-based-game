@@ -36,7 +36,7 @@ public class UserController {
     // Endpoint for retrieving a user from the database given the username
     @GetMapping("/user/{userName}")
     public ResponseEntity<UserResponse> getUserName(@PathVariable String userName) {
-        // Calls the user service to check if the user exists in the database
+
         Optional<User> user = userService.getMatchingUserName(userName);
 
         return user.map(foundUser -> ResponseEntity.ok(
@@ -44,11 +44,9 @@ public class UserController {
         )).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    // Endpoint for inserting a new user into the database
+    // Endpoint for creating a new user account
     @PostMapping("/register")
     public ResponseEntity<RegisterUserResponse> createUser(@RequestBody CreateUserRequest request) {
-
-        // Calls the createUser method to create a new user account and insert the info into the database
 
         try {
 
@@ -72,8 +70,6 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<LoginUserResponse> loginUser(@RequestBody LoginUserRequest request) {
 
-        // Calls loginUser method to determine if the user exists in the database and the password for the user is correct
-        // And saves the result of the login into a boolean value
         boolean authenticated = userService.loginUser(
                 request.getUserName(),
                 request.getPassword()
@@ -90,6 +86,7 @@ public class UserController {
 
     }
 
+    // Endpoint for retrieving the logged-in user
     @GetMapping("/user/me")
     public ResponseEntity<UserResponse> getCurrentUser(Authentication authentication) {
 
