@@ -1,11 +1,14 @@
 package com.hoehn.game.entities;
-
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+
+// Entity for score_board table
 
 @Entity
 @Table(name = "score_board")
@@ -16,11 +19,9 @@ public class Score {
     @Column(name = "score_id")
     private int id;
 
-
-    // TODO change foreign key relationship in database from username to userid instead?
-
-    @Column(name = "user_name", nullable = false)
-    private String userName;
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     @Column(name = "score", nullable = false)
     private int score;
@@ -38,8 +39,8 @@ public class Score {
         return id;
     }
 
-    public String getUserName() {
-        return userName;
+    public User getUser() {
+        return user;
     }
 
     public int getScore() {
@@ -62,8 +63,8 @@ public class Score {
         this.id = id;
     }
 
-    public void setUser(String userName) {
-        this.userName = userName;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public void setScore(int score) {

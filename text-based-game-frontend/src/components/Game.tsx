@@ -92,7 +92,7 @@ function Game({ gameResponse, onGameExit }: GameProps) {
                 </>
             )}
 
-            {gameState.itemDescription && (
+            {!gameState.gameOver && gameState.itemDescription && (
                 <p>{gameState.itemDescription}</p>
             )}
 
@@ -113,7 +113,6 @@ function Game({ gameResponse, onGameExit }: GameProps) {
             )}
 
             <div className="command-line">
-                <span>&gt;</span>
 
                 {!gameState.gameOver && (
                     <input
@@ -131,7 +130,7 @@ function Game({ gameResponse, onGameExit }: GameProps) {
 
                 {gameState.gameOver && (
                     <button onClick={onGameExit}>
-                        Exit
+                        &gt; Exit
                     </button>
                 )}
             </div>

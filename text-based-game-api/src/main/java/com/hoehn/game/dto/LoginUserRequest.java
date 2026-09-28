@@ -1,5 +1,7 @@
 package com.hoehn.game.dto;
 
+// DTO for receiving username and password when logging in.
+
 public class LoginUserRequest {
 
     private String userName;

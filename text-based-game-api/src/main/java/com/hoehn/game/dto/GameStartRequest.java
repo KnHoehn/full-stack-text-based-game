@@ -1,8 +1,8 @@
 package com.hoehn.game.dto;
 
-public class GameStartRequest {
+// DTO for receiving the player's selected game theme from the frontend.
 
-    // DTO for a game start request
+public class GameStartRequest {
 
     private String theme;
 

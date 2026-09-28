@@ -13,6 +13,6 @@ public interface ScoreRepository extends JpaRepository<Score, Integer> {
     List<Score> findTop10ByOrderByScoreDesc();
 
     // Retrieves the top 10 scores from a user in descending order from the database
-    List<Score> findTop10ByUserNameOrderByScoreDesc(String userName);
+    List<Score> findTop10ByUser_UserNameOrderByScoreDesc(String userName);
 
 }

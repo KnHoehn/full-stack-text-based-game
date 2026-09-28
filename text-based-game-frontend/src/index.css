@@ -73,3 +73,37 @@ main {
   padding: 0 15px;
   text-align: left;
 }
+
+.login-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 20px;
+  align-items: flex-start;
+}
+
+.theme-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 20px;
+  align-items: flex-start;
+}
+
+button {
+  border: none;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  padding: 0;
+  cursor: pointer;
+}
+
+button:hover {
+  text-decoration: underline;
+}
+
+button:focus {
+  outline: none;
+  text-decoration: underline;
+}

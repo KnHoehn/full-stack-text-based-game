@@ -2,6 +2,8 @@ package com.hoehn.game.dto;
 
 import java.util.List;
 
+// DTO for sending game state and game information to the frontend.
+
 public class GameResponse {
 
     private String gameId;

@@ -1,5 +1,7 @@
 package com.hoehn.game.dto;
 
+// DTO for receiving username and password when creating a new user.
+
 public class CreateUserRequest {
 
     private String userName;
