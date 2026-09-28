@@ -81,18 +81,11 @@ public class GameService {
 
     }
 
+
+
     public GameResponse processCommand(String gameId, String command) {
 
-        GameState gameState = getGame(gameId);
-
-        if (gameState == null) {
-            throw new IllegalArgumentException("Game not found.");
-        }
-
-        // Prevents the user from entering another command after the game is over
-        if (gameState.getGameOver()) {
-            throw new IllegalStateException("Game is already over.");
-        }
+        GameState gameState = validateGame(gameId);
 
         String message = "";
 
@@ -107,99 +100,23 @@ public class GameService {
                 || normalizedCommand.equals("go east")
                 || normalizedCommand.equals("go west")) {
 
-            String direction = normalizedCommand.substring(3);
+            message = processMovement(gameState, normalizedCommand);
 
-            direction = direction.substring(0, 1).toUpperCase()
-                    + direction.substring(1);
+            Room currentRoom = gameState.getRooms()
+                    .get(gameState.getCurrentRoom());
 
-            Room currentRoom = gameState.getRooms().get(gameState.getCurrentRoom());
+            if (currentRoom.getBoss()) {
 
-            Map<String, String> connectedRooms = currentRoom.getConnectedRooms();
+                EndGameResult result = processEndGame(gameState);
 
-            if (connectedRooms.containsKey(direction)) {
-
-                String nextRoomName = connectedRooms.get(direction);
-
-                gameState.setCurrentRoom(nextRoomName);
-
-                gameState.incrementMoves();
-
-                if (gameState.getMoves() > 10) {
-                    gameState.scorePenalty(10);
-                }
-
-                Room nextRoom = gameState.getRooms().get(nextRoomName);
-
-                if (nextRoom.getBoss()) {
-
-                    totalTime = (System.currentTimeMillis()
-                            - gameState.getStartTime()) / 1000;
-
-                    int finalMoveScore = gameState.getMoveScore();
-
-                    if (gameState.getInventory().size() == NUM_ITEMS_TO_WIN) {
-                        message = "You see the " + gameState.getBoss() + ".\n"
-                                + "A battle ensues.\n"
-                                + "...\n"
-                                + "Congratulations! You defeated "
-                                + gameState.getBoss() + "!";
-
-                    } else {
-                        message = "You see the " + gameState.getBoss() + ".\n"
-                                + "A battle ensues...\n"
-                                + "...\n"
-                                + gameState.getLoseBattleMessage() + " Game over";
-
-                        gameState.setGameOver(true);
-
-                        finalMoveScore = 0;
-                    }
-
-                    finalScore = ScoreCalculator.calculateScore(
-                            totalTime,
-                            finalMoveScore
-                    );
-
-                    Score score = new Score();
-
-                    User user = userService.getMatchingUserName(gameState.getUserName())
-                            .orElseThrow(() -> new IllegalArgumentException("User not found."));
-
-                    score.setUser(user);
-                    score.setScore((int) finalScore);
-                    score.setMoves(gameState.getMoves());
-                    score.setTime((int) totalTime);
-                    score.setTheme(gameState.getTheme());
-
-                    scoreService.createScore(score);
-
-                    gameState.setGameOver(true);
-
-                } else {
-                    message = "You moved " + direction + ".";
-                }
-
-            } else {
-
-                message = "You cannot go that way.";
+                message = result.message();
+                finalScore = result.finalScore();
+                totalTime = result.totalTime();
             }
+
         } else if (normalizedCommand.startsWith("get ")) {
 
-            String itemName = normalizedCommand.substring(4).trim();
-
-            Room currentRoom = gameState.getRooms().get(gameState.getCurrentRoom());
-
-            if (currentRoom.getItem() != null
-                    && currentRoom.getItem().equalsIgnoreCase(itemName)) {
-
-                gameState.addToInventory(currentRoom.getItem());
-                currentRoom.setItem(null);
-                currentRoom.setItemDescription(null);
-                message = "You picked up the " + itemName + ".";
-
-            } else {
-                message = "That item is not here.";
-            }
+            message = processGetItem(gameState, normalizedCommand);
 
         }  else if (normalizedCommand.equals("i")) {
             message = "instructions";
@@ -227,6 +144,137 @@ public class GameService {
                 totalTime
         );
     }
+
+    private GameState validateGame(String gameId) {
+        GameState gameState = getGame(gameId);
+
+        if (gameState == null) {
+            throw new IllegalArgumentException("Game not found.");
+        }
+
+        if (gameState.getGameOver()) {
+            throw new IllegalStateException("Game is already over.");
+        }
+
+        return gameState;
+    }
+
+    private String getDirection(String command) {
+        String direction = command.substring(3);
+
+        return direction.substring(0, 1).toUpperCase()
+                + direction.substring(1);
+    }
+
+    private String processMovement(
+            GameState gameState,
+            String command) {
+
+        String direction = getDirection(command);
+
+        Room currentRoom = gameState.getRooms()
+                .get(gameState.getCurrentRoom());
+
+        Map<String, String> connectedRooms =
+                currentRoom.getConnectedRooms();
+
+        if (!connectedRooms.containsKey(direction)) {
+            return "You cannot go that way.";
+        }
+
+        String nextRoomName = connectedRooms.get(direction);
+
+        gameState.setCurrentRoom(nextRoomName);
+
+        gameState.incrementMoves();
+
+        if (gameState.getMoves() > 10) {
+            gameState.scorePenalty(10);
+        }
+
+        return "You moved " + direction + ".";
+    }
+
+    private String processGetItem(
+            GameState gameState,
+            String command) {
+
+        String itemName = command.substring(4).trim();
+
+        Room currentRoom = gameState.getRooms()
+                .get(gameState.getCurrentRoom());
+
+        if (currentRoom.getItem() != null
+                && currentRoom.getItem().equalsIgnoreCase(itemName)) {
+
+            gameState.addToInventory(currentRoom.getItem());
+            currentRoom.setItem(null);
+            currentRoom.setItemDescription(null);
+
+            return "You picked up the " + itemName + ".";
+        }
+
+        return "That item is not here.";
+    }
+
+    private record EndGameResult(
+            String message,
+            long finalScore,
+            long totalTime
+    ) {}
+
+    private EndGameResult processEndGame(GameState gameState) {
+
+        long totalTime = (System.currentTimeMillis()
+                - gameState.getStartTime()) / 1000;
+
+        int finalMoveScore = gameState.getMoveScore();
+
+        String message;
+
+        if (gameState.getInventory().size() == NUM_ITEMS_TO_WIN) {
+
+            message = "You see the " + gameState.getBoss() + ".\n"
+                    + "A battle ensues.\n"
+                    + "...\n"
+                    + "Congratulations! You defeated "
+                    + gameState.getBoss() + "!";
+
+        } else {
+
+            message = "You see the " + gameState.getBoss() + ".\n"
+                    + "A battle ensues...\n"
+                    + "...\n"
+                    + gameState.getLoseBattleMessage() + " Game over";
+
+            gameState.setGameOver(true);
+
+            finalMoveScore = 0;
+        }
+
+        long finalScore = ScoreCalculator.calculateScore(
+                totalTime,
+                finalMoveScore
+        );
+
+        Score score = new Score();
+
+        User user = userService.getMatchingUserName(gameState.getUserName())
+                .orElseThrow(() -> new IllegalArgumentException("User not found."));
+
+        score.setUser(user);
+        score.setScore((int) finalScore);
+        score.setMoves(gameState.getMoves());
+        score.setTime((int) totalTime);
+        score.setTheme(gameState.getTheme());
+
+        scoreService.createScore(score);
+
+        gameState.setGameOver(true);
+
+        return new EndGameResult(message, finalScore, totalTime);
+    }
+
 
     public GameState getGame(String gameId) {
 

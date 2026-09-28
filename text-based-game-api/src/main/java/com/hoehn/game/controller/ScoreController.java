@@ -1,6 +1,5 @@
 package com.hoehn.game.controller;
 
-import com.hoehn.game.entities.Score;
 import com.hoehn.game.service.ScoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
