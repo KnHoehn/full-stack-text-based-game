@@ -87,12 +87,13 @@ public class GameService {
         GameState gameState = validateGame(gameId);
 
         String message = "";
-
         long finalScore = 0;
-
         long totalTime = 0;
 
         String normalizedCommand = command.trim().toLowerCase();
+
+        Room currentRoom = gameState.getRooms()
+                .get(gameState.getCurrentRoom());
 
         if (normalizedCommand.equals("go north")
                 || normalizedCommand.equals("go south")
@@ -101,7 +102,7 @@ public class GameService {
 
             message = processMovement(gameState, normalizedCommand);
 
-            Room currentRoom = gameState.getRooms()
+            currentRoom = gameState.getRooms()
                     .get(gameState.getCurrentRoom());
 
             if (currentRoom.getBoss()) {
@@ -115,7 +116,7 @@ public class GameService {
 
         } else if (normalizedCommand.startsWith("get ")) {
 
-            message = processGetItem(gameState, normalizedCommand);
+            message = processGetItem(gameState, normalizedCommand, currentRoom);
 
         }  else if (normalizedCommand.equals("i")) {
             message = "instructions";
@@ -126,8 +127,6 @@ public class GameService {
         } else {
             message = "Invalid command. Type 'I' to see the instructions.";
         }
-
-        Room currentRoom = gameState.getRooms().get(gameState.getCurrentRoom());
 
         return new GameResponse(
                 gameState.getGameId(),
@@ -194,14 +193,14 @@ public class GameService {
         return "You moved " + direction + ".";
     }
 
+    // Processes the player's command if they are trying to pick up an item
     private String processGetItem(
             GameState gameState,
-            String command) {
+            String command,
+            Room currentRoom) {
 
+        // Gets the name of the item the user is trying to pick up
         String itemName = command.substring(4).trim();
-
-        Room currentRoom = gameState.getRooms()
-                .get(gameState.getCurrentRoom());
 
         if (currentRoom.getItem() != null
                 && currentRoom.getItem().equalsIgnoreCase(itemName)) {
