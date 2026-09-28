@@ -5,7 +5,6 @@ import com.hoehn.game.entities.Score;
 import com.hoehn.game.models.GameState;
 import com.hoehn.game.models.Room;
 import com.hoehn.game.models.Theme;
-import com.hoehn.game.models.World;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.hoehn.game.entities.User;
@@ -22,17 +21,21 @@ public class GameService {
 
     private final UserService userService;
 
+    private final GameWorldService gameWorldService;
+
     private static final int NUM_ITEMS_TO_WIN = 6;
 
     @Autowired
     public GameService(
             ThemeService themeService,
             ScoreService scoreService,
-            UserService userService) {
+            UserService userService,
+            GameWorldService gameWorldService) {
 
         this.themeService = themeService;
         this.scoreService = scoreService;
         this.userService = userService;
+        this.gameWorldService = gameWorldService;
     }
 
     private final Map<String, GameState> activeGames = new HashMap<>();
@@ -48,7 +51,7 @@ public class GameService {
         // Selects the theme given the user's choice
         Theme theme = themeService.chooseTheme(themeChoice);
 
-        gameState.setRooms(World.createRooms(theme));
+        gameState.setRooms(gameWorldService.createRooms(theme));
 
         // Sets the theme in the gamestate
         gameState.setTheme(theme.getName());

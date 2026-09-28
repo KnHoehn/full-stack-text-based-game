@@ -1,4 +1,4 @@
-package com.hoehn.game.models;
+package com.hoehn.game.service;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -6,17 +6,19 @@ import java.io.Reader;
 import java.util.HashMap;
 import java.util.Map;
 import com.google.gson.Gson;
+import com.hoehn.game.models.Room;
+import com.hoehn.game.models.Theme;
+import org.springframework.stereotype.Service;
 
-public final class World {
-
-    private World() {}
+@Service
+public final class GameWorldService {
 
     /** This method creates the game theme given the theme choice from the user.
      *
      * @param filePath the filepath for the json of the theme the player chose.
      * @return the theme of the game.
      */
-    public static Theme createTheme(final String filePath) {
+    public Theme createTheme(final String filePath) {
 
         Theme theme = new Theme();
 
@@ -40,7 +42,7 @@ public final class World {
      * @param theme the theme of the game.
      * @return the rooms mapping.
      * */
-    public static Map<String, Room> createRooms(final Theme theme) {
+    public Map<String, Room> createRooms(final Theme theme) {
 
         Map<String, Room> rooms = new HashMap<>();
 
@@ -51,3 +53,4 @@ public final class World {
         return rooms;
     }
 }
+

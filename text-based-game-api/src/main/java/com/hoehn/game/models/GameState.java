@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.UUID;
 import java.util.Map;
 
-public class GameState {
+// Model that holds the current state of the players game
 
-    // Model that holds the current state of the players game
+public class GameState {
 
     private final String gameId;
     private String theme;
