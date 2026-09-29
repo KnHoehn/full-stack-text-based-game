@@ -1,3 +1,4 @@
+// Represents the game state data returned by the game API to the frontend.
 export type GameResponse = {
     gameId: string
     gameName: string
@@ -6,6 +7,7 @@ export type GameResponse = {
     itemDescription: string | null
     inventory: string[]
     gameOver: boolean
+    movementMessage: string
     message: string
     score: number
     moves: number

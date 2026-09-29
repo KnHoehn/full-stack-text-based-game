@@ -87,7 +87,8 @@ class GameServiceTest {
         assertEquals("A test item.", result.itemDescription());
         assertEquals(0, result.inventory().size());
         assertFalse(result.gameOver());
-        assertEquals("Game started.", result.message());
+        assertEquals("Game started.", result.movementMessage());
+        assertEquals("", result.message());
         assertEquals(0, result.score());
         assertEquals(0, result.moves());
         assertEquals(0, result.time());
@@ -152,7 +153,7 @@ class GameServiceTest {
                 gameService.processCommand(startResult.gameId(), "go north");
 
         assertEquals("North Room", result.currentRoom());
-        assertEquals("You moved North.", result.message());
+        assertEquals("You moved North.", result.movementMessage());
         assertEquals(1, result.moves());
         assertFalse(result.gameOver());
         assertEquals("North room.", result.itemDescription());
@@ -211,7 +212,7 @@ class GameServiceTest {
                 gameService.processCommand(startResult.gameId(), "go east");
 
         assertEquals("Starting Room", result.currentRoom());
-        assertEquals("You cannot go that way.", result.message());
+        assertEquals("You cannot go that way.", result.movementMessage());
         assertEquals(0, result.moves());
         assertFalse(result.gameOver());
     }
@@ -727,6 +728,7 @@ class GameServiceTest {
         gameService.processCommand(gameId, "go north");
 
         gameService.processCommand(gameId, "get item 6");
+
         GameResponse result =
                 gameService.processCommand(gameId, "go north");
 
@@ -736,7 +738,7 @@ class GameServiceTest {
         assertTrue(result.score() > 0);
 
         assertTrue(result.message().contains("Congratulations!"));
-        assertTrue(result.message().contains("You defeated Alien!"));
+        assertTrue(result.message().contains("You defeated the Alien!"));
     }
 
     @Test

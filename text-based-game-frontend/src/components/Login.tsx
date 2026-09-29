@@ -4,7 +4,7 @@ type LoginProps = {
     onLogin: () => void
 }
 
-function Login({ onLogin }: LoginProps) {
+function Login({ onLogin }: Readonly<LoginProps>) {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [message, setMessage] = useState('')

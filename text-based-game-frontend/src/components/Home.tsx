@@ -13,31 +13,42 @@ function Home() {
         setLoggedIn(false)
     }
 
-    return (
-        <main>
-            {!loggedIn ? (
-                <>
-                    <h1>Text Adventure Game</h1>
+    let content
 
-                    <h2>A Text-Based Adventure</h2>
-
-                    <p>
-                        Welcome to the text adventure! Log in or create an account to get started.
-                    </p>
-
-                    <Login onLogin={() => setLoggedIn(true)} />
-                </>
-            ) : gameResponse === null ? (
+    if (loggedIn) {
+        if (gameResponse === null) {
+            content = (
                 <ThemeSelection
-                    onGameStarted={(gameResponse) => setGameResponse(gameResponse)}
+                    onGameStarted={(response) => setGameResponse(response)}
                     onLogout={handleLogout}
                 />
-            ) : (
+            )
+        } else {
+            content = (
                 <Game
                     gameResponse={gameResponse}
                     onGameExit={() => setGameResponse(null)}
                 />
-            )}
+            )
+        }
+    } else {
+        content = (
+            <>
+                <h1>Text Adventure Game</h1>
+
+                <p>
+                    Welcome to Text Adventure, the text-based adventure game! Log in or create an account to get
+                    started.
+                </p>
+
+                <Login onLogin={() => setLoggedIn(true)} />
+            </>
+        )
+    }
+
+    return (
+        <main>
+            {content}
         </main>
     )
 }

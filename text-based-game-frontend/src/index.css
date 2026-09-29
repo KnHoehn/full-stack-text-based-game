@@ -1,6 +1,6 @@
 :root {
   font-family: monospace;
-  color: #ffffff;
+  color: #00ff00;
   background: #000000;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -17,9 +17,27 @@ body {
 }
 
 main {
-  max-width: 900px;
-  margin: 0 auto;
+  width: min(900px, calc(100% - 80px));
+  min-height: calc(100vh - 80px);
+  margin: 40px auto;
   padding: 40px;
+  box-sizing: border-box;
+  border: 1px solid #333333;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.08);
+}
+
+main p {
+  line-height: 1.6;
+}
+
+main h2 {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+main h3 {
+  margin-top: 30px;
+  margin-bottom: 15px;
 }
 
 .command-line {
@@ -106,4 +124,10 @@ button:hover {
 button:focus {
   outline: none;
   text-decoration: underline;
+}
+
+.game-title {
+  font-size: 28px;
+  margin-top: 0;
+  margin-bottom: 30px;
 }
