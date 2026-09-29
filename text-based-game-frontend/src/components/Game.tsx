@@ -80,7 +80,7 @@ function Game({ gameResponse, onGameExit }: Readonly<GameProps>) {
                     <p>Add to inventory: Get &lt;item name&gt;</p>
                     <p>Type 'Exit' to exit game</p>
                     <p>Type 'I' to show instructions again</p>
-                    <p>-----------------------------------</p>
+                    <p>------------------------------------</p>
                 </>
             )}
 
