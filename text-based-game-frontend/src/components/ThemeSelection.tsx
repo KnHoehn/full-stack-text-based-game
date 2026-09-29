@@ -6,7 +6,7 @@ type ThemeSelectionProps = {
     onLogout: () => void
 }
 
-function ThemeSelection({ onGameStarted, onLogout }: ThemeSelectionProps) {
+function ThemeSelection({ onGameStarted, onLogout }: Readonly<ThemeSelectionProps>) {
 
     async function startGame(theme: string) {
 

@@ -31,7 +31,8 @@ function Scoreboard() {
                 })
 
                 if (!response.ok) {
-                    throw new Error('Unable to retrieve scores')
+                    console.error('Unable to retrieve scores')
+                    return
                 }
 
                 const result: Score[] = await response.json()
@@ -45,7 +46,8 @@ function Scoreboard() {
                 })
 
                 if (!leaderboardResponse.ok) {
-                    throw new Error('Unable to retrieve leaderboard')
+                    console.error('Unable to retrieve leaderboard')
+                    return
                 }
 
                 const leaderboardResult: Score[] = await leaderboardResponse.json()
@@ -57,7 +59,7 @@ function Scoreboard() {
             }
         }
 
-        getScores()
+        void getScores()
     }, [])
 
     return (

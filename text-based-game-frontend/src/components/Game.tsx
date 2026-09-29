@@ -8,12 +8,14 @@ type GameProps = {
 }
 
 
-function Game({ gameResponse, onGameExit }: GameProps) {
+function Game({ gameResponse, onGameExit }: Readonly<GameProps>) {
 
     const [gameState, setGameState] = useState(gameResponse)
     const [command, setCommand] = useState('')
     const [showInstructions, setShowInstructions] = useState(true)
+    const [showTitle, setShowTitle] = useState(true)
 
+    // Processes the user command
     async function handleCommand() {
         if (command.trim() === '') {
             return
@@ -51,6 +53,7 @@ function Game({ gameResponse, onGameExit }: GameProps) {
                 })
             } else {
                 setShowInstructions(false)
+                setShowTitle(false)
                 setGameState(result)
             }
 
@@ -63,7 +66,9 @@ function Game({ gameResponse, onGameExit }: GameProps) {
 
     return (
         <div>
-            <h2>{gameState.gameName}</h2>
+            {showTitle && (
+                <h2>{gameState.gameName}</h2>
+            )}
 
             <p>{gameState.story}</p>
 
@@ -75,14 +80,16 @@ function Game({ gameResponse, onGameExit }: GameProps) {
                     <p>Add to inventory: Get &lt;item name&gt;</p>
                     <p>Type 'Exit' to exit game</p>
                     <p>Type 'I' to show instructions again</p>
+                    <p>-----------------------------------</p>
                 </>
             )}
 
+            <p>{gameState.movementMessage}</p>
+
+            <p>You are in the {gameState.currentRoom}.</p>
+
             <p style={{ whiteSpace: 'pre-line' }}>{gameState.message}</p>
 
-            {!gameState.gameOver && (
-                <p>You are in the {gameState.currentRoom}.</p>
-            )}
 
             {gameState.gameOver && (
                 <>
@@ -121,7 +128,7 @@ function Game({ gameResponse, onGameExit }: GameProps) {
                         onChange={(event) => setCommand(event.target.value)}
                         onKeyDown={(event) => {
                             if (event.key === 'Enter') {
-                                handleCommand()
+                                void handleCommand()
                             }
                         }}
                         autoFocus
