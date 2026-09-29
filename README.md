@@ -56,7 +56,7 @@ This project demonstrates full-stack application development, REST API design, a
 * Personal score history
 * Global leaderboard displaying top scores
 * REST API connecting the frontend and backend
-* Responsive web-based interface
+* Terminal-inspired web interface with typed command input
 * Persistent user and score data using MySQL
 
 ## Application Architecture
@@ -146,6 +146,7 @@ The Spring Boot application exposes REST endpoints for authentication, game func
 ### Prerequisites
 
 * Java JDK 17 or higher
+* Maven
 * Node.js and npm
 * MySQL
 * Git
