@@ -73,6 +73,7 @@ public class GameService {
                 gameState.getInventory(),
                 gameState.getGameOver(),
                 "Game started.",
+                "",
                 0,
                 0,
                 0
@@ -86,6 +87,7 @@ public class GameService {
         // Validates the player's game
         GameState gameState = validateGame(gameId);
 
+        String movementMessage = "";
         String message = "";
         long finalScore = 0;
         long totalTime = 0;
@@ -102,7 +104,7 @@ public class GameService {
                 || normalizedCommand.equals("go east")
                 || normalizedCommand.equals("go west")) {
 
-            message = processMovement(gameState, normalizedCommand, currentRoom);
+            movementMessage = processMovement(gameState, normalizedCommand, currentRoom);
 
             currentRoom = gameState.getRooms()
                     .get(gameState.getCurrentRoom());
@@ -143,6 +145,7 @@ public class GameService {
                 currentRoom.getItemDescription(),
                 gameState.getInventory(),
                 gameState.getGameOver(),
+                movementMessage,
                 message,
                 finalScore,
                 gameState.getMoves(),
@@ -255,18 +258,18 @@ public class GameService {
         // If player wins, displays winning message
         if (gameState.getInventory().size() == NUM_ITEMS_TO_WIN) {
 
-            message = "You see the " + gameState.getBoss() + ".\n"
-                    + "A battle ensues.\n"
-                    + "...\n"
+            message = "You see the " + gameState.getBoss() + ".\n\n"
+                    + "A battle ensues.\n\n"
+                    + "...\n\n"
                     + "Congratulations! You defeated the "
                     + gameState.getBoss() + "!";
 
             // If player lost, displays losing message and zeros out the move score
         } else {
 
-            message = "You see the " + gameState.getBoss() + ".\n"
-                    + "A battle ensues...\n"
-                    + "...\n"
+            message = "You see the " + gameState.getBoss() + ".\n\n"
+                    + "A battle ensues...\n\n"
+                    + "...\n\n"
                     + gameState.getLoseBattleMessage() + " Game over";
 
             gameState.setGameOver(true);

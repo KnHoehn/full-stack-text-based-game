@@ -35,6 +35,7 @@ class GameControllerTest {
                 "A mysterious room.",
                 java.util.List.of(),
                 false,
+                "",
                 "Game started.",
                 1000,
                 0,
@@ -79,6 +80,7 @@ class GameControllerTest {
                 java.util.List.of(),
                 false,
                 "You moved north.",
+                "",
                 1000,
                 1,
                 5
@@ -97,7 +99,7 @@ class GameControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.gameId").value("game123"))
                 .andExpect(jsonPath("$.currentRoom").value("North Room"))
-                .andExpect(jsonPath("$.message").value("You moved north."));
+                .andExpect(jsonPath("$.movementMessage").value("You moved north."));
 
         verify(gameService).processCommand("game123", "go north");
     }

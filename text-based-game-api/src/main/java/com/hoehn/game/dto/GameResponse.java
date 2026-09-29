@@ -12,6 +12,7 @@ public record GameResponse(
         String itemDescription,
         List<String> inventory,
         boolean gameOver,
+        String movementMessage,
         String message,
         long score,
         int moves,
