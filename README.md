@@ -10,7 +10,7 @@ Players can create an account, log in, select a game theme, explore the game wor
 
 The application consists of a React/TypeScript frontend communicating with a Java Spring Boot REST API. Game and user data are persisted in a MySQL database.
 
-This project demonstrates full-stack application development, REST API design, authentication and authorization, database integration, and frontend development.
+This project demonstrates full-stack application development, REST API design, authentication and authorization, and database integration.
 
 ## Technologies Used
 
