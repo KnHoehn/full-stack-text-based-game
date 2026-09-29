@@ -67,7 +67,7 @@ function Game({ gameResponse, onGameExit }: Readonly<GameProps>) {
     return (
         <div>
             {showTitle && (
-                <h2>{gameState.gameName}</h2>
+                <h2 className="game-title">{gameState.gameName}</h2>
             )}
 
             <p>{gameState.story}</p>
@@ -86,7 +86,9 @@ function Game({ gameResponse, onGameExit }: Readonly<GameProps>) {
 
             <p>{gameState.movementMessage}</p>
 
-            <p>You are in the {gameState.currentRoom}.</p>
+            {!gameState.gameOver && (
+                <p>You are in the {gameState.currentRoom}.</p>
+            )}
 
             <p style={{ whiteSpace: 'pre-line' }}>{gameState.message}</p>
 
@@ -110,11 +112,7 @@ function Game({ gameResponse, onGameExit }: Readonly<GameProps>) {
                     {gameState.inventory.length === 0 ? (
                         <p>Your inventory is empty.</p>
                     ) : (
-                        <ul>
-                            {gameState.inventory.map((item) => (
-                                <li key={item}>{item}</li>
-                            ))}
-                        </ul>
+                        <p>{gameState.inventory.join(' | ')}</p>
                     )}
                 </>
             )}
@@ -122,17 +120,20 @@ function Game({ gameResponse, onGameExit }: Readonly<GameProps>) {
             <div className="command-line">
 
                 {!gameState.gameOver && (
-                    <input
-                        type="text"
-                        value={command}
-                        onChange={(event) => setCommand(event.target.value)}
-                        onKeyDown={(event) => {
-                            if (event.key === 'Enter') {
-                                void handleCommand()
-                            }
-                        }}
-                        autoFocus
-                    />
+                    <>
+                        <span>&gt;</span>
+                        <input
+                            type="text"
+                            value={command}
+                            onChange={(event) => setCommand(event.target.value)}
+                            onKeyDown={(event) => {
+                                if (event.key === 'Enter') {
+                                    void handleCommand()
+                                }
+                            }}
+                            autoFocus
+                        />
+                    </>
                 )}
 
                 {gameState.gameOver && (
