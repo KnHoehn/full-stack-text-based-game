@@ -1,6 +1,6 @@
 # Text-Based Game
 
-A full-stack text adventure game built with Java, Spring Boot, React, and TypeScript. This project is an enhanced full-stack version of my [original Python version](https://github.com/KnHoehn/Python-Text-Based-Game), expanding the original console-based game into a web application with a REST API, user authentication, database persistence, and a dynamic scoring system.
+A full-stack text adventure game built with Java, Spring Boot, React, and TypeScript. This project is an enhanced full-stack version of my [original Python version](https://github.com/KnHoehn/Python-Text-Based-Game), expanding the original console-based game into a web application with a REST API, user authentication, database persistence, dynamic scoring system, and theme selection.
 
 ## Overview
 
@@ -241,7 +241,7 @@ This application was developed from my original console-based text adventure gam
 
 **[Python Text-Based Game](https://github.com/KnHoehn/Python-Text-Based-Game)**
 
-The original project was a console-based text adventure focused on game logic, room navigation, item collection, and command-based gameplay. I expanded the game into a full-stack web application by adding a React/TypeScript frontend, Spring Boot REST API, user authentication, database persistence, and scoring and leaderboard functionality.
+The original project was a console-based text adventure focused on game logic, room navigation, item collection, and command-based gameplay. I expanded the game into a full-stack web application by adding a React/TypeScript frontend, Spring Boot REST API, user authentication, database persistence, theme selection, and scoring and leaderboard functionality.
 
 ## Game Maps
 
