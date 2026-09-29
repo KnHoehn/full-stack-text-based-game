@@ -86,7 +86,7 @@ function Game({ gameResponse, onGameExit }: Readonly<GameProps>) {
 
             <p>{gameState.movementMessage}</p>
 
-            {!gameState.gameOver && (
+            {(!gameState.gameOver || gameState.movementMessage !== '') && (
                 <p>You are in the {gameState.currentRoom}.</p>
             )}
 
