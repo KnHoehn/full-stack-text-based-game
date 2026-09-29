@@ -102,7 +102,7 @@ User authentication is handled by the Spring Boot backend using Spring Security 
 The authentication flow is:
 
 1. A user creates an account.
-2. The password is securely hashed and salted before being stored.
+2. Password storage using salted SHA-512 hashing
 3. The user logs in with their credentials.
 4. The backend verifies the credentials and generates a JWT.
 5. The frontend stores the JWT and includes it with requests to protected endpoints.
@@ -182,7 +182,7 @@ CREATE TABLE users (
 ```sql
 CREATE TABLE score_board (
     score_id INT AUTO_INCREMENT PRIMARY KEY,
-    user_name VARCHAR(255) NOT NULL,
+    user_id VARCHAR(255) NOT NULL,
     score INT NOT NULL,
     moves INT NOT NULL,
     time INT NOT NULL,
