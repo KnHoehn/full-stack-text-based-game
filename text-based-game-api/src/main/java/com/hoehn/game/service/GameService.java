@@ -122,7 +122,7 @@ public class GameService {
             // If the player is trying to pick up an item, processes that command
         } else if (normalizedCommand.startsWith("get ")) {
 
-            message = processGetItem(gameState, normalizedCommand, currentRoom);
+            movementMessage = processGetItem(gameState, normalizedCommand, currentRoom);
 
             // If the player enters "i", displays the instructions
         }  else if (normalizedCommand.equals("i")) {
