@@ -12,6 +12,25 @@ The application consists of a React/TypeScript frontend communicating with a Jav
 
 This project demonstrates full-stack application development, REST API design, authentication and authorization, and database integration.
 
+## Screenshots
+
+### Login
+
+<img width="902" height="437" alt="Screenshot 2026-09-29 173734" src="https://github.com/user-attachments/assets/a8172d12-9c4f-4209-85df-7baaa10a491a" />
+
+### Theme Selection/Leaderboard
+
+<img width="479" height="326" alt="image" src="https://github.com/user-attachments/assets/67e71542-022e-4450-91bc-1bc0775249fd" />
+
+### Gameplay
+
+<img width="478" height="367" alt="image" src="https://github.com/user-attachments/assets/bb37983c-b425-402d-9786-e6f991c028f8" />
+
+<img width="891" height="427" alt="image" src="https://github.com/user-attachments/assets/09841dd6-74e1-4097-9302-a4f6cb10ba30" />
+
+<img width="894" height="428" alt="image" src="https://github.com/user-attachments/assets/337d4cda-1b4a-46a2-b95f-bc66777b4677" />
+
+
 ## Technologies Used
 
 ### Backend
@@ -86,7 +105,7 @@ JWT tokens are used to authenticate users when accessing protected endpoints.
 
 ## User Interface Design
 
-The user interface was intentionally designed with a terminal-inspired aesthetic to complement the text-based nature of the game. The black background, monospace typography, command prompts, and text-based navigation are reminiscent of classic text-based adventure games while providing a modern web-based interface. This design emphasizes the game's focus on exploration and typed commands while creating a cohesive visual identity across the application.
+The user interface was intentionally designed with a terminal-inspired aesthetic to complement the text-based nature of the game. 
 
 ## Game Mechanics
 
@@ -246,7 +265,7 @@ The original project was a console-based text adventure focused on game logic, r
 
 ## Game Maps
 
-If you get stuck during a playthrough, the maps for each theme are provided below.
+The game is meant to be played without a map, however if you get stuck during a playthrough and would find it helpful the maps for each theme are provided below.
 
 ### Space Theme
 
