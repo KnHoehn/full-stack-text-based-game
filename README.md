@@ -215,8 +215,6 @@ CREATE TABLE score_board (
 
 7. Start the Spring Boot application.
 
-```
-
 ### Frontend Setup
 
 1. Navigate to the frontend directory.
