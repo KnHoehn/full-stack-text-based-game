@@ -2,8 +2,6 @@
 
 A full-stack text adventure game built with Java, Spring Boot, React, and TypeScript. This project is an enhanced full-stack version of my [original Python version](https://github.com/KnHoehn/Python-Text-Based-Game), expanding the original console-based game into a web application with a REST API, user authentication, database persistence, dynamic scoring system, and theme selection.
 
-This project is the latest iteration of a larger project that began as a [Python-based text adventure game](https://github.com/KnHoehn/Python-Text-Based-Game) and was later enhanced into a [Java-based console application](https://github.com/KnHoehn/JavaTextBasedGame). The full-stack version builds upon the Java application with a web-based interface, REST API, and additional functionality.
-
 ## Overview
 
 The goal of the game is to navigate through a themed map, collect all required items, and reach the boss location. If the player reaches the boss without collecting all required items, the game is lost.
