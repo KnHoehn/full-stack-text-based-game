@@ -259,7 +259,15 @@ This application was developed from my original console-based text adventure gam
 
 **[Python Text-Based Game](https://github.com/KnHoehn/Python-Text-Based-Game)**
 
-The original project was a console-based text adventure focused on game logic, room navigation, item collection, and command-based gameplay. I expanded the game into a full-stack web application by adding a React/TypeScript frontend, Spring Boot REST API, user authentication, database persistence, theme selection, and scoring and leaderboard functionality.
+The original project was a console-based text adventure focused on game logic, room navigation, item collection, and command-based gameplay. 
+
+This was later enhanced into a Java version:
+
+**[Java Text-Based Game](https://github.com/KnHoehn/JavaTextBasedGame)**
+
+This Java version added database integration, user authentication, and a dynamic scoring system, allowing users to create accounts, play through different themed environments, and track their performance through a leaderboard.
+
+I expanded the game from these versions into a full-stack web application by adding a React/TypeScript frontend, Spring Boot REST API, and JWT-based authentication.
 
 ## Game Maps
 
