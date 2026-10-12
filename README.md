@@ -24,7 +24,7 @@ This project demonstrates full-stack application development, REST API design, a
 
 ### Gameplay
 
-<img width="478" height="367" alt="image" src="https://github.com/user-attachments/assets/bb37983c-b425-402d-9786-e6f991c028f8" />
+<img width="923" height="469" alt="Screenshot 2026-09-29 174135" src="https://github.com/user-attachments/assets/5e465b12-c7b4-4a72-8412-37e7e6c807fc" />
 
 <img width="891" height="427" alt="image" src="https://github.com/user-attachments/assets/09841dd6-74e1-4097-9302-a4f6cb10ba30" />
 
