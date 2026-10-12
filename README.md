@@ -20,7 +20,7 @@ This project demonstrates full-stack application development, REST API design, a
 
 ### Theme Selection/Leaderboard
 
-<img width="479" height="326" alt="image" src="https://github.com/user-attachments/assets/67e71542-022e-4450-91bc-1bc0775249fd" />
+<img width="918" height="469" alt="Screenshot 2026-09-29 175401" src="https://github.com/user-attachments/assets/765d9246-cff5-4ea8-8ca1-dee064daea12" />
 
 ### Gameplay
 
